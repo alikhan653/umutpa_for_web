@@ -1,8 +1,4 @@
-/**
- * @file sendVerification.js
- * @author Sanjay Sunil
- * @license MIT
- */
+
 
 function send_verification() {
   // successNotification("Verification email has successfully been sent!")
