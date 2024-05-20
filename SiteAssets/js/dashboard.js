@@ -1,6 +1,3 @@
-$(function () {
-	initCharts();
-});
 
 const auth = firebase.auth();
 console.log(auth.currentUser);
@@ -8,6 +5,7 @@ auth.onAuthStateChanged(function (user) {
 	if (user) {
 		var email_id = user.email;
 		var userId = user.uid;
+		fetchPatientsData(user);
 
 		console.log(user.uid);
 		var dbRef = firebase.database().ref('Users/' + userId);
@@ -17,6 +15,7 @@ auth.onAuthStateChanged(function (user) {
 				var userData = snapshot.val();
 				var userName = userData.name;
 				console.log("User's name is: " + userName);
+				document.getElementById("div-name").innerText = userName.split(" ")[0];
 				document.getElementById("usernamePlaceholder").innerHTML = email_id;
 			} else {
 				console.log("No data available for the specified user ID");
@@ -37,89 +36,50 @@ function setPatientData() {
 		console.log('Number of patients:', count);
 		document.getElementById('patientCount').innerText = count;
 	});
-	var doctorRef = firebase.database().ref('patients');
-	patientsRef.once('value', function(snapshot) {
-		var count = snapshot.numChildren();
-		console.log('Number of patients:', count);
-		document.getElementById('patientCount').innerText = count;
+	var doctorRef = firebase.database().ref('Doctors');
+	doctorRef.once('value', function(snapshot) {
+		var doctorData = snapshot.val()
+		console.log(doctorData)
 	});
 }
+function addPatientRow(patient) {
+	console.log("Patients" + patient);
+	const tableBody = document.getElementById('patients-table-body');
+	const row = document.createElement('tr');
 
-function bsEvents(){
-	$('.onboarding-modal').modal('show');
+	row.innerHTML = `
+    <td><img class="rounded-circle" src="${patient.imageUrl}" loading="lazy" /></td>
+    <td><p>${patient.email}</p></td>
+    <td><p class="text-muted">${patient.name}</p></td>
+    <td class="text-right"><p>${patient.phone}</p></td>
+    <td class="text-right"><button class="btn btn-dark-blue-f btn-sm">appointment</button></td>
+    <td><button class="btn btn-sm"><i class="las la-ellipsis-h"></i></button></td>
+  `;
+
+	tableBody.appendChild(row);
 }
 
-function initCharts() {
-	Chart.defaults.global.legend.labels.usePointStyle = true;
+function fetchPatientsData(doctor) {
+	const doctorPatientsRef = firebase.database().ref('Doctors/' + doctor.uid + '/Patients');
 
-	var ctx = $('#bookings-chart');
-	var ctx2 = $('#diseases-chart');
-	var ctx3 = $('#recent-activity-chart');
+	doctorPatientsRef.once('value').then((snapshot) => {
+		console.log("TEST1");
+		snapshot.forEach((patientSnapshot) => {
+			const patientId = patientSnapshot.key;
+			const patientDataRef = firebase.database().ref('Users/' + patientId);
 
-	var recentActivitesChart = new Chart(ctx3, {
-		type: 'line',
-		data: {
-			labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
-			datasets: [{
-				label: '# of patients',
-				data: [12, 19, 3, 5, 1, 2, 4, 15],
-				backgroundColor: [
-					'rgba(255, 99, 132, 0.7)',
-					'rgba(54, 162, 235, 0.7)',
-					'rgba(255, 206, 86, 0.7)',
-					'rgba(75, 192, 192, 0.7)',
-				],
-			}],
-		},
-		options: {
-			legend: {
-				display: true,
-				position: 'bottom',
-			}
-		},
-	})
-	var bookingsChart = new Chart(ctx, {
-		type: 'doughnut',
-		data: {
-			labels: ['urgent', 'no urgent', 'resuscitation', 'emergency'],
-			datasets: [{
-				label: '# of Votes',
-				data: [12, 19, 3, 5],
-				backgroundColor: [
-					'rgba(255, 206, 86, 0.7)',
-					'rgba(75, 192, 192, 0.7)',
-					'rgba(54, 162, 235, 0.7)',
-					'rgba(255, 99, 132, 0.7)',
-				],
-			}],
-		},
-		options: {
-			legend: {
-				display: true,
-				position: 'bottom',
-			}
-		},
-	})
-	var diseasesChart = new Chart(ctx2, {
-		type: 'doughnut',
-		data: {
-			labels: ['malaria', 'tuberculosis', 'pneumonia', 'diabetes'],
-			datasets: [{
-				label: '# of Votes',
-				data: [13, 1, 8, 15],
-				backgroundColor: [
-					'rgba(255, 206, 86, 0.7)',
-					'rgba(75, 192, 192, 0.7)',
-					'rgba(54, 162, 235, 0.7)',
-					'rgba(255, 99, 132, 0.7)',
-				],
-			}],
-		},
-		options: {
-			legend: {
-				display: true,
-				position: 'bottom',
-			}
-		},
-	})
+			patientDataRef.once('value').then((patientDataSnapshot) => {
+				console.log("TEST2" + doctorPatientsRef);
+				const patient = patientDataSnapshot.val();
+				addPatientRow(patient);
+			}).catch((error) => {
+				console.error('Error fetching patient data:', error);
+				errorNotification('Error fetching patient data: ' + error.message);
+			});
+		});
+
+	}).catch((error) => {
+		console.error('Error fetching patients data:', error);
+		errorNotification('Error fetching patients data: ' + error.message);
+	});
 }

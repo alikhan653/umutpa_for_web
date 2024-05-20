@@ -50,7 +50,7 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="las la-cog mr-2"></i>settings</a>
                                 <a class="dropdown-item" onclick="logout()" href="login.html">
-                                    <i class="las la-cog mr-2"></i>Logout</a>
+                                    <i class="las la-door-closed mr-2"></i>Logout</a>
                             </div>
                         </div>
                     </li>
@@ -91,7 +91,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6 welcome-text-wrapper align-self-center">
-                                            <h5>hello, dr. Beknar</h5>
+                                            <h5>hello, Dr. <span id="div-name"></span></h5>
                                             <p>Welcome to your dashboard</p>
                                         </div>
                                         <div class="col-md-6 welcome-img-wrapper"><img
@@ -148,75 +148,8 @@
                                 </div>
                                 <div class="card-body">
                                     <table class="table table-borderless table-hover table-responsive-md">
-                                        <tbody>
-                                            <tr>
-                                                <td><img class="rounded-circle" src="../SiteAssets/images/man.svg"
-                                                        loading="lazy" /></td>
-                                                <td>
-                                                    <p>Izimov Alikhan</p>
-                                                </td>
-                                                <td>
-                                                    <p class="text-muted">male</p>
-                                                </td>
-                                                <td class="text-right">
-                                                    <p>+7777777777</p>
-                                                </td>
-                                                <td class="text-right"><button
-                                                        class="btn btn-dark-blue-f btn-sm                                                        ">appointment</button></td>
-                                                <td><button class="btn btn-sm"><i
-                                                            class="las la-ellipsis-h"></i></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td><img class="rounded-circle" src="../SiteAssets/images/man.svg"
-                                                        loading="lazy" /></td>
-                                                <td>
-                                                    <p>Kaldybek Beibit</p>
-                                                </td>
-                                                <td>
-                                                    <p class="text-muted">male</p>
-                                                </td>
-                                                <td class="text-right">
-                                                    <p>+77010053536</p>
-                                                </td>
-                                                <td class="text-right"><button
-                                                        class="btn btn-dark-blue-f btn-sm                                                        ">appointment</button></td>
-                                                <td><button class="btn btn-sm"><i
-                                                            class="las la-ellipsis-h"></i></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td><img class="rounded-circle" src="../SiteAssets/images/man.svg"
-                                                        loading="lazy" /></td>
-                                                <td>
-                                                    <p>Toleubay Alibek</p>
-                                                </td>
-                                                <td>
-                                                    <p class="text-muted">male</p>
-                                                </td>
-                                                <td class="text-right">
-                                                    <p>+77012891728</p>
-                                                </td>
-                                                <td class="text-right"><button
-                                                        class="btn btn-dark-blue-f btn-sm                                                        ">appointment</button></td>
-                                                <td><button class="btn btn-sm"><i
-                                                            class="las la-ellipsis-h"></i></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td><img class="rounded-circle" src="../SiteAssets/images/man.svg"
-                                                        loading="lazy" /></td>
-                                                <td>
-                                                    <p>Tolegen Alibek</p>
-                                                </td>
-                                                <td>
-                                                    <p class="text-muted">male</p>
-                                                </td>
-                                                <td class="text-right">
-                                                    <p>+7712892178</p>
-                                                </td>
-                                                <td class="text-right"><button
-                                                        class="btn btn-dark-blue-f btn-sm                                                        ">appointment</button></td>
-                                                <td><button class="btn btn-sm"><i
-                                                            class="las la-ellipsis-h"></i></button></td>
-                                            </tr>
+                                        <tbody id="patients-table-body">
+                                        <!-- Patient rows will be inserted here dynamically -->
                                         </tbody>
                                     </table>
                                 </div>
