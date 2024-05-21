@@ -23,6 +23,7 @@
   <script>
     function reg_account() {
       document.getElementById("registration-div").style.display = "block";
+      document.getElementById("login-container").style.height = '100%';
       document.getElementById("login-div").style.display = "none";
     }
     function log_account() {
@@ -33,8 +34,8 @@
   </script>
 </head>
 <body>
-<div class="login-container">
-  <div class="main">
+<div class="login-container" id="login-container" style="margin-bottom: 10%">
+  <div class="main" id="main">
     <div class="row" id= "login-div">
       <h1>Sign In</h1>
       <input id = "email" type = "text" placeholder = "Email"></input>
@@ -47,7 +48,10 @@
     <div class="row" id = "registration-div">
       <h1>Create an Account</h1>
       <input id = "email-signup" type = "text" placeholder = "Email *"></input>
-      <input id="name-signup" type="text" placeholder="Name *"></input>
+      <input id="fname-signup" type="text" placeholder="First Name *"></input>
+      <input id="lname-signup" type="text" placeholder="Last Name *"></input>
+      <input id="number-signup" type="text" placeholder=" Phone Number *"></input>
+      <input id = "position-signup" type = "text" placeholder = "Position *"></input>
       <input id = "password-signup" type = "password" placeholder = "Password *"></input>
       <input id = "confirm-password-signup" type = "password" placeholder = "Confirm Password *"></input>
       <button onclick="registration()" id = "create-acct-btn">Create Account</button>

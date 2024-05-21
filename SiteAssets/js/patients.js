@@ -52,16 +52,16 @@ $(() => {
 				snapshot.forEach((patientSnapshot) => {
 					const patientId = patientSnapshot.key;
 					const patientDataRef = firebase.database().ref('Users/' + patientId);
+					console.log(patientId);
 
 					patientDataRef.once('value').then((patientDataSnapshot) => {
 						const patient = patientDataSnapshot.val();
 						const cardViewContainer = document.querySelector('.patients-card-view .row');
 						const tableViewBody = document.querySelector('.patients-table-view tbody');
 
-						cardViewContainer.innerHTML = '';
-						tableViewBody.innerHTML = '';
 
 						const patientCard = createPatientCard(patient, patientId);
+						console.log(patientCard);
 						const patientRow = createPatientTableRow(patient, patientId);
 
 						cardViewContainer.appendChild(patientCard);

@@ -14,7 +14,6 @@ auth.onAuthStateChanged(function (user) {
 			if (snapshot.exists()) {
 				var userData = snapshot.val();
 				var userName = userData.name;
-				document.getElementById("div-name").innerText = userName.split(" ")[0];
 				document.getElementById("usernamePlaceholder").innerHTML = email_id;
 			} else {
 				console.log("No data available for the specified user ID");
@@ -50,13 +49,15 @@ function fetchPatientsData(patientId) {
 
 		if (patient) {
 			// Update the HTML with the patient data
+			console.log(patient.dob)
 			document.querySelector('.mini-card .card-header img').src = patient.profileImage || 'https://placebeard.it/640x360';
 			document.querySelector('.mini-card .card-body h4').textContent = patient.name || 'N/A';
+			document.querySelector('.breadcrumb-item.active ').textContent = patient.name || 'N/A';
 			document.querySelector('.mini-card .card-body small').textContent = patient.email || 'N/A';
 			document.querySelector('.mini-card .card-body h5').textContent = 'Age';
 			document.querySelector('.mini-card .card-body p').textContent = patient.age || 'N/A';
 			document.querySelector('.patients-details-card-wrapper .form-group #patient-gender').value = patient.gender || 'N/A';
-			document.querySelector('.patients-details-card-wrapper .form-group #patient-dob').value = patient.dateOfBirth || 'N/A';
+			document.querySelector('.patients-details-card-wrapper .form-group #patient-dob').value = patient.dob || 'N/A';
 			document.querySelector('.patients-details-card-wrapper .form-group #patient-number').value = patient.phoneNumber || 'N/A';
 			document.querySelector('.patients-details-card-wrapper .form-group #patient-address').value = patient.address || 'N/A';
 			document.querySelector('.patients-details-card-wrapper .form-group #patient-city').value = patient.city || 'N/A';
@@ -68,7 +69,6 @@ function fetchPatientsData(patientId) {
 		console.error('Error fetching patient data:', error);
 		errorNotification('Error fetching patient data: ' + error.message);
 	});
-
 }
 
 function getUrlParameter(name) {
@@ -76,4 +76,34 @@ function getUrlParameter(name) {
 	const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
 	const results = regex.exec(location.search);
 	return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+function fetchUpcomingAppointments(userId) {
+	const appointmentsRef = firebase.database().ref('Doctors/' + userId + '/Appointments');
+
+	appointmentsRef.once('value').then((snapshot) => {
+		const appointments = snapshot.val();
+		const upcomingAppointmentsDiv = document.getElementById('upcoming-appointments');
+
+		// Clear existing appointments
+		upcomingAppointmentsDiv.innerHTML = `
+            <div class="section-title">
+                <button class="btn btn-dark-red-f btn-sm">
+                    <i class="las la-calendar-plus"></i>create an appointment
+                </button>
+            </div>
+        `;
+
+		if (appointments) {
+			Object.keys(appointments).forEach(key => {
+				const appointment = appointments[key];
+				const appointmentHTML = createAppointmentHTML(appointment);
+				upcomingAppointmentsDiv.insertAdjacentHTML('beforeend', appointmentHTML);
+			});
+		} else {
+			upcomingAppointmentsDiv.insertAdjacentHTML('beforeend', '<p>No upcoming appointments</p>');
+		}
+	}).catch((error) => {
+		console.error('Error fetching appointments:', error);
+	});
 }
