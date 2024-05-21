@@ -6,6 +6,7 @@ auth.onAuthStateChanged(function (user) {
 		var email_id = user.email;
 		var userId = user.uid;
 		fetchPatientsData(user);
+		setPatientData(user);
 
 		console.log(user.uid);
 		var dbRef = firebase.database().ref('Users/' + userId);
@@ -29,8 +30,8 @@ auth.onAuthStateChanged(function (user) {
 	}
 });
 
-function setPatientData() {
-	var patientsRef = firebase.database().ref('patients');
+function setPatientData(user) {
+	var patientsRef = firebase.database().ref('Doctors/' + user.uid + '/Patients');
 	patientsRef.once('value', function(snapshot) {
 		var count = snapshot.numChildren();
 		console.log('Number of patients:', count);
@@ -43,7 +44,6 @@ function setPatientData() {
 	});
 }
 function addPatientRow(patient) {
-	console.log("Patients" + patient);
 	const tableBody = document.getElementById('patients-table-body');
 	const row = document.createElement('tr');
 
@@ -58,12 +58,33 @@ function addPatientRow(patient) {
 
 	tableBody.appendChild(row);
 }
+function addAppointmentRow(appointment) {
+	const tableBody = document.getElementById('appointments-table-body');
+	const row = document.createElement('tr');
+
+	const patientDataRef = firebase.database().ref('Users/' + appointment.patientId);
+	console.log("TEST1" + appointment.patientId)
+	patientDataRef.once('value').then((patientDataSnapshot) => {
+		const patient = patientDataSnapshot.val();
+		console.log("TEST2" + patient.imageUrl)
+		row.innerHTML = `
+    <td><img class="rounded-circle" src="${patient.imageUrl}" loading="lazy" /></td>
+    <td><p>${appointment.name}</p></td>
+    <td><p class="text-muted">${appointment.date}</p></td>
+    <td><p class="text-muted">${appointment.description}</p></td>
+    <td class="text-right"><p>${appointment.time}</p></td>
+    <td><button class="btn btn-sm"><i class="las la-ellipsis-h"></i></button></td>
+  `;
+	});
+
+
+	tableBody.appendChild(row);
+}
 
 function fetchPatientsData(doctor) {
 	const doctorPatientsRef = firebase.database().ref('Doctors/' + doctor.uid + '/Patients');
 
 	doctorPatientsRef.once('value').then((snapshot) => {
-		console.log("TEST1");
 		snapshot.forEach((patientSnapshot) => {
 			const patientId = patientSnapshot.key;
 			const patientDataRef = firebase.database().ref('Users/' + patientId);
@@ -75,6 +96,25 @@ function fetchPatientsData(doctor) {
 			}).catch((error) => {
 				console.error('Error fetching patient data:', error);
 				errorNotification('Error fetching patient data: ' + error.message);
+			});
+		});
+
+	}).catch((error) => {
+		console.error('Error fetching patients data:', error);
+		errorNotification('Error fetching patients data: ' + error.message);
+	});
+
+	const appointmentRef = firebase.database().ref('Doctors/' + doctor.uid + '/Appointments');
+
+	appointmentRef.once('value').then((snapshot) => {
+		snapshot.forEach((appointmentSnapshot) => {
+			const appointmentId = appointmentSnapshot.key;
+			console.log("AppointmentID"+appointmentId);
+			const appointmentDataRef = firebase.database().ref('Doctors/' + doctor.uid + '/Appointments/' + appointmentId);
+			appointmentDataRef.once('value').then((appointmentDataSnapshot) => {
+				const appointment = appointmentDataSnapshot.val();
+				addAppointmentRow(appointment);
+
 			});
 		});
 

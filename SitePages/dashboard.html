@@ -11,11 +11,6 @@
     <script src="../SiteAssets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="../SiteAssets/js/global.js"></script>
     <link rel="stylesheet" href="../SiteAssets/css/pages/dashboard.css" />
-    <script>
-        window.onload = function() {
-            setPatientData();
-        };
-    </script>
 </head>
 
 <body>
@@ -153,7 +148,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="card-footer"><a class="view-more" href="">more<i
+                                <div class="card-footer"><a class="view-more" href="patients.html">more<i
                                             class="las la-angle-right"></i></a></div>
                             </div>
                             <div class="card">
@@ -162,83 +157,12 @@
                                 </div>
                                 <div class="card-body">
                                     <table class="table table-borderless table-hover table-responsive-md">
-                                        <tbody>
-                                            <tr>
-                                                <td><img class="rounded-circle" src="../SiteAssets/images/man.svg"
-                                                        loading="lazy" /></td>
-                                                <td>
-                                                    <p>Tolegen Alibek</p>
-                                                </td>
-                                                <td>
-                                                    <p class="text-muted">male</p>
-                                                </td>
-                                                <td class="text-right">
-                                                    <p>24y</p>
-                                                </td>
-                                                <td class="text-right"><button class="btn"><i
-                                                            class="las la-check-circle"></i></button><button
-                                                        class="btn"><i class="las la-times-circle"></i></button></td>
-                                                <td><button class="btn btn-sm"><i
-                                                            class="las la-ellipsis-h"></i></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td><img class="rounded-circle" src="../SiteAssets/images/man.svg"
-                                                        loading="lazy" /></td>
-                                                <td>
-                                                    <p>Kim So Huyn</p>
-                                                </td>
-                                                <td>
-                                                    <p class="text-muted">male</p>
-                                                </td>
-                                                <td class="text-right">
-                                                    <p>24y</p>
-                                                </td>
-                                                <td class="text-right"><button class="btn"><i
-                                                            class="las la-check-circle"></i></button><button
-                                                        class="btn"><i class="las la-times-circle"></i></button></td>
-                                                <td><button class="btn btn-sm"><i
-                                                            class="las la-ellipsis-h"></i></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td><img class="rounded-circle" src="../SiteAssets/images/man.svg"
-                                                        loading="lazy" /></td>
-                                                <td>
-                                                    <p>Geewoni</p>
-                                                </td>
-                                                <td>
-                                                    <p class="text-muted">female</p>
-                                                </td>
-                                                <td class="text-right">
-                                                    <p>24y</p>
-                                                </td>
-                                                <td class="text-right"><button class="btn"><i
-                                                            class="las la-check-circle"></i></button><button
-                                                        class="btn"><i class="las la-times-circle"></i></button></td>
-                                                <td><button class="btn btn-sm"><i
-                                                            class="las la-ellipsis-h"></i></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td><img class="rounded-circle" src="../SiteAssets/images/man.svg"
-                                                        loading="lazy" /></td>
-                                                <td>
-                                                    <p>john doe</p>
-                                                </td>
-                                                <td>
-                                                    <p class="text-muted">male</p>
-                                                </td>
-                                                <td class="text-right">
-                                                    <p>24y</p>
-                                                </td>
-                                                <td class="text-right"><button class="btn"><i
-                                                            class="las la-check-circle"></i></button><button
-                                                        class="btn"><i class="las la-times-circle"></i></button></td>
-                                                <td><button class="btn btn-sm"><i
-                                                            class="las la-ellipsis-h"></i></button></td>
-                                            </tr>
+                                        <tbody id="appointments-table-body">
+                                        <!-- Appointment rows will be inserted here dynamically -->
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="card-footer"><a class="view-more" href="">more<i
+                                <div class="card-footer"><a class="view-more" href="appointments.html">more<i
                                             class="las la-angle-right"></i></a></div>
                             </div>
                         </div>
