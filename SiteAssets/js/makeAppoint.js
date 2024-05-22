@@ -9,7 +9,6 @@ auth.onAuthStateChanged(function(user) {
         appointmentForm.addEventListener('submit', function(event) {
             event.preventDefault();
 
-            // Get form values
             const patientSelect = document.getElementById('patient-select');
             const patientId = patientSelect.value;
             const name = patientSelect.options[patientSelect.selectedIndex].text;
@@ -17,8 +16,8 @@ auth.onAuthStateChanged(function(user) {
             const time = document.getElementById('time').value;
             const place = document.getElementById('place').value;
             const description = document.getElementById('description').value;
+            const userId = user.uid;
 
-            // Create a new appointment object
             const newAppointment = {
                 patientId: patientId,
                 name: name,
@@ -27,22 +26,30 @@ auth.onAuthStateChanged(function(user) {
                 place: place,
                 description: description
             };
+            const newAppointment1 = {
+                doctorId: userId,
+                name: name,
+                date: date,
+                time: time,
+                place: place,
+                description: description
+            };
 
-            // Add the new appointment to the collection
-            const userId = user.uid;
+            const appointmentsRef1 = firebase.database().ref('Users/' + patientId + '/Appointments');
+            appointmentsRef1.push(newAppointment1)
+
             const appointmentsRef = firebase.database().ref('Doctors/' + userId + '/Appointments');
             appointmentsRef.push(newAppointment)
                 .then(function() {
-                    // Reset form after successful submission
                     appointmentForm.reset();
                     alert('New appointment added successfully!');
-                    // Redirect to appointments.html
                     window.location.href = 'appointments.html';
                 })
                 .catch(function(error) {
                     console.error('Error adding new appointment: ', error);
                     alert('Error adding new appointment. Please try again.');
                 });
+
         });
 
         // Add event listener for patient select change

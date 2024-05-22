@@ -7,6 +7,8 @@ auth.onAuthStateChanged(function (user) {
 		var userId = user.uid;
 		const patientId = getUrlParameter('patientId');
 		fetchPatientsData(patientId);
+		fetchUpcomingAppointments(patientId, userId);
+		displayPatientMedications(patientId);
 
 		var dbRef = firebase.database().ref('Users/' + userId);
 
@@ -78,8 +80,8 @@ function getUrlParameter(name) {
 	return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
-function fetchUpcomingAppointments(userId) {
-	const appointmentsRef = firebase.database().ref('Doctors/' + userId + '/Appointments');
+function fetchUpcomingAppointments(patientId) {
+	const appointmentsRef = firebase.database().ref('Users/' + patientId + '/Appointments');
 
 	appointmentsRef.once('value').then((snapshot) => {
 		const appointments = snapshot.val();
@@ -106,4 +108,157 @@ function fetchUpcomingAppointments(userId) {
 	}).catch((error) => {
 		console.error('Error fetching appointments:', error);
 	});
+}
+function getDoctorName(doctorId) {
+	console.log('Doctor ID:', doctorId);
+	const doctorDataRef = firebase.database().ref('Users/' + doctorId);
+	console.log('Doctor Data Ref:', doctorDataRef);
+	doctorDataRef.once('value').then((snapshot) => {
+		const doctorData = snapshot.val();
+		console.log('Doctor Data:', doctorData.first_name);
+		return doctorData.first_name;
+	}).catch((error) => {
+		console.error('Error fetching doctor data:', error);
+		throw error;
+	});
+}
+function createAppointmentHTML(appointment) {
+	const user = firebase.auth().currentUser;
+	return `
+        <div class="media">
+            <div class="align-self-center mr-3">
+                <p>${getDayOfWeek(appointment.date)}</p>
+                <h3>${getDayOfMonth(appointment.date)}</h3>
+                <p>${getYear(appointment.date)}</p>
+            </div>
+            <div class="media-body">
+                <div class="row">
+                    <label class="label-green-bl">${appointment.description}</label>
+                    <p>with Dr. ${user.name}</p>
+                    <p><i class="las la-tv"></i>on ${appointment.place}</p>
+                    <p><i class="las la-clock"></i>${appointment.time} - ${addMinutesToTime(appointment.time, 30)}</p>
+                    <label class="label-cream label-sm">
+                        <i class="las la-hourglass-half"></i>30 min
+                    </label>
+                    <a href=""><i class="las la-ellipsis-v"></i></a>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function getDayOfWeek(dateString) {
+	const date = new Date(dateString);
+	return date.toLocaleString('en-US', { weekday: 'short' });
+}
+function addMinutesToTime(time, minutesToAdd) {
+	// Split the time string into hours and minutes
+	const [hours, minutes] = time.split(':').map(Number);
+
+	// Create a new Date object and set the hours and minutes
+	const date = new Date();
+	date.setHours(hours);
+	date.setMinutes(minutes);
+
+	// Add the specified number of minutes
+	date.setMinutes(date.getMinutes() + minutesToAdd);
+
+	// Get the new hours and minutes
+	const newHours = date.getHours();
+	const newMinutes = date.getMinutes();
+
+	// Format the new hours and minutes back to a time string (e.g., "13:42")
+	const formattedTime = `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`;
+
+	return formattedTime;
+}
+function getDayOfMonth(dateString) {
+	const date = new Date(dateString);
+	return date.getDate();
+}
+
+function getYear(dateString) {
+	const date = new Date(dateString);
+	return date.getFullYear();
+}
+
+function getDuration(timeString) {
+	const times = timeString.split(' - ');
+	const startTime = new Date(`1970-01-01T${times[0]}:00`);
+	const endTime = new Date(`1970-01-01T${times[1]}:00`);
+	const duration = (endTime - startTime) / (1000 * 60); // Convert milliseconds to minutes
+	return duration;
+}
+
+function fetchPatientMedications(patientId) {
+	const medicationsRef = firebase.database().ref('Users/' + patientId + '/Medications');
+
+	return medicationsRef.once('value').then((snapshot) => {
+		const medications = snapshot.val();
+		if (medications) {
+			return medications;
+		} else {
+			throw new Error('No medications found for this patient.');
+		}
+	}).catch((error) => {
+		console.error('Error fetching medications:', error);
+		throw error;
+	});
+}
+
+function createMedicationHTML(medication) {
+	return `
+		<div class="media">
+            <div class="align-self-center mr-3">
+                <img class="rounded-circle medication-img" src="../SiteAssets/images/person.jpg" loading="lazy" />
+            </div>
+            <div class="media-body">
+                <div class="row">
+                    <label class="label-blue-bl">${medication.title}</label>
+                    <p>${medication.description}</p>
+                    <p><i class="las la-clock"></i>${medication.time}</p>
+                   
+                    <a href=""><i class="las la-ellipsis-v"></i></a>
+                </div>
+            </div>
+        </div>
+        
+    `;
+}
+
+function displayPatientMedications(patientId) {
+	try {
+		const medicationsRef = firebase.database().ref('Users/' + patientId + '/Medications');
+
+		medicationsRef.once('value').then((snapshot) => {
+			var medications = snapshot.val();
+
+			if (medications) {
+				const container = document.getElementById("medications");
+
+				container.innerHTML = `
+            		<div class="section-title">
+                		<button onclick="location.href='medicaments.html'" class="btn btn-dark-red-f btn-sm">
+                    	<i class="las la-calendar-plus"></i>Add a medication
+                		</button>
+            		</div>
+        		`;
+				Object.keys(medications).forEach(key => {
+					const medication = medications[key];
+					const medicationHTML = createMedicationHTML(medication);
+					container.insertAdjacentHTML('beforeend', medicationHTML);
+				});
+			} else {
+				throw new Error('No medications found for this patient.');
+			}
+		}).catch((error) => {
+			console.error('Error fetching medications:', error);
+			throw error;
+		});
+
+	} catch (error) {
+		const container = document.getElementById("medications");
+		container.innerHTML = `<p>Error loading medications: ${error.message}</p>`;
+	}
+
 }

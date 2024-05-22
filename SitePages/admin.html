@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Add New Patient</title>
+    <link rel="stylesheet" href="../SiteAssets/css/vendors/bootstrap.min.css">
+    <link rel="stylesheet" href="../SiteAssets/css/vendors/line-awesome.min.css">
+    <link rel="stylesheet" href="../SiteAssets/css/pages/layout.css">
+    <link rel="stylesheet" href="../SiteAssets/css/pages/new-patient.css">
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+    <script type="text/javascript" src="../SiteAssets/js/firebaseconf.js"></script>
+    <script type="text/javascript" src="../SiteAssets/js/admin.js"></script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-9">
+                <div class="card">
+                    <h1>Add New Patient</h1>
+                    <div class="card-body">
+                        <form id="patientForm">
+                            <div class="form-group">
+                                <label for="patientName">Name:</label>
+                                <input type="text" id="patientName" class="form-control" placeholder="Enter patient name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="patientName">Date of birth:</label>
+                                <input type="date" id="patientBirth" class="form-control" placeholder="Date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="patientAge">Age</label>
+                                <input type="number" id="patientAge" class="form-control" placeholder="Age" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="patientEmail">Email:</label>
+                                <input type="email" id="patientEmail" class="form-control" placeholder="Enter patient email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="patientStage">Stage:</label>
+                                <select id="patientStage" class="form-control" required>
+                                    <option value="first">First</option>
+                                    <option value="second">Second</option>
+                                    <option value="third">Third</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="patientPhone">Phone:</label>
+                                <input type="tel" id="patientPhone" class="form-control" placeholder="Enter patient phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="patientPassword">Password:</label>
+                                <input type="password" id="patientPassword" class="form-control" placeholder="Enter patient password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Patient</button>
+                            <a href="appointments.html" class="btn btn-secondary">Back</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

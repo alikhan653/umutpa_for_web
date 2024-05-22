@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Patient to Doctor</title>
+    <link rel="stylesheet" href="../SiteAssets/css/vendors/bootstrap.min.css">
+    <link rel="stylesheet" href="../SiteAssets/css/vendors/line-awesome.min.css">
+    <link rel="stylesheet" href="../SiteAssets/css/pages/layout.css">
+    <link rel="stylesheet" href="../SiteAssets/css/pages/new-patient.css">
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+    <script type="text/javascript" src="../SiteAssets/js/firebaseconf.js"></script>
+    <script type="text/javascript" src="../SiteAssets/js/addPat.js"></script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-9">
+                <div class="card">
+                    <h1>Add Patient to Your List</h1>
+                    <div class="card-body">
+                        <form id="doctorPatientForm">
+                            <div class="form-group">
+                                <label for="commonPatients">Select Patient:</label>
+                                <select id="commonPatients" class="form-control" required></select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Patient</button>
+                            <a href="patients.html" class="btn btn-secondary">Back</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

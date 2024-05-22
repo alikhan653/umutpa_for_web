@@ -125,8 +125,7 @@ function deleteAppointment(appointmentId) {
         appointmentsRef.remove()
             .then(function() {
                 console.log('Appointment deleted successfully!');
-                // Optionally, you can also remove the appointment row from the table here
-                fetchPatientsData(user); // Refresh the appointments list
+                fetchPatientsData(user);
             })
             .catch(function(error) {
                 console.error('Error deleting appointment: ', error);

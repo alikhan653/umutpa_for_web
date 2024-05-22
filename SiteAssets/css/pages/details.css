@@ -578,5 +578,9 @@ label {
     float: none !important;
   }
 }
-
+.medication-img {
+  width: 50px; /* Set your desired width */
+  height: 50px; /* Set your desired height */
+  object-fit: cover; /* Ensures the image covers the area and maintains aspect ratio */
+}
 /*# sourceMappingURL=details.css.map */
