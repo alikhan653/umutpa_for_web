@@ -11,9 +11,6 @@
     <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
     <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
-    <script type="text/javascript" src="../SiteAssets/js/firebaseconf.js"></script>
-    <script type="text/javascript" src="../SiteAssets/js/userData.js"></script>
-    <script type="text/javascript" src="../SiteAssets/js/profile.js"></script>
     <link rel="stylesheet" href="../SiteAssets/css/pages/settings.css" />
 </head>
 
@@ -65,8 +62,8 @@
                                                                                   href="appointments.html" data-toggle="tooltip" data-placement="bottom" title="Specialists"><i
                 class="las la-clinic-medical la-lw"></i><span>appointments</span></a><a class="list-group-item"
                                                                                         href="notifications.html" data-toggle="tooltip" data-placement="bottom" title="Notifications"><i
-                class="las la-sms la-lw"></i><span>notifications</span></a><a class="list-group-item"
-                                                                              href="settings.html" data-toggle="tooltip" data-placement="bottom" title="Settings"><i
+                class="las la-medkit la-lw"></i><span>medications</span></a><a class="list-group-item"
+                                                                               href="settings.html" data-toggle="tooltip" data-placement="bottom" title="Settings"><i
                 class="las la-cogs la-lw"></i><span>settings</span></a>
             <hr class="divider" />
 
@@ -90,7 +87,7 @@
                             </div>
                             <div class="sub-section-body">
                                 <div class="row">
-                                    <div class="col-lg-2 col-md-4"><img class="rounded-circle profile-picture-img"
+                                    <div class="col-lg-2 col-md-4"><img class="rounded-circle profile-picture-img" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;"
                                                                         src="../SiteAssets/images/doctor.svg" /></div>
                                     <div class="col-lg-6 col-md-8">
                                         <div class="d-flex mb-2">
@@ -146,6 +143,24 @@
         </div>
     </div>
 </main>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+</script>
+<!-- Bootstrap -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js"
+        integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+</script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+
+<script type="text/javascript" src="../SiteAssets/js/firebaseconf.js"></script>
+<script type="text/javascript" src="../SiteAssets/js/logout.js"></script>
+<script type="text/javascript" src="../SiteAssets/js/userData.js"></script>
+<script type="text/javascript" src="../SiteAssets/js/profile.js"></script>
 </body>
 
 </html>

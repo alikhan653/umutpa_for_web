@@ -1,7 +1,5 @@
-
-
-
 function setPatientData(user) {
+	console.log('Setting patient data:', user);
 	var patientsRef = firebase.database().ref('Doctors/' + user.uid + '/Patients');
 	patientsRef.once('value', function(snapshot) {
 		var count = snapshot.numChildren();
@@ -14,10 +12,21 @@ function setPatientData(user) {
 		console.log(doctorData)
 	});
 }
+
+auth.onAuthStateChanged(function (user) {
+	if (user) {
+		var email_id = user.email;
+		var userId = user.uid;
+		fetchPatientsData(user);
+		setPatientData(user);
+	}
+});
 function addPatientRow(patient) {
 	const tableBody = document.getElementById('patients-table-body');
 	const row = document.createElement('tr');
-
+	if(patient.imageUrl == null){
+		patient.imageUrl = "../SiteAssets/images/people.svg";
+	}
 	row.innerHTML = `
     <td><img class="rounded-circle" src="${patient.imageUrl}" loading="lazy" /></td>
     <td><p>${patient.email}</p></td>
@@ -37,7 +46,9 @@ function addAppointmentRow(appointment) {
 	console.log("TEST1" + appointment.patientId)
 	patientDataRef.once('value').then((patientDataSnapshot) => {
 		const patient = patientDataSnapshot.val();
-		console.log("TEST2" + patient.imageUrl)
+		if(patient.imageUrl == null){
+			patient.imageUrl = "../SiteAssets/images/undraw_medicine_b1ol.svg";
+		}
 		row.innerHTML = `
     <td><img class="rounded-circle" src="${patient.imageUrl}" loading="lazy" /></td>
     <td><p>${appointment.name}</p></td>

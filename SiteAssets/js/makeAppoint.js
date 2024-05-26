@@ -1,4 +1,3 @@
-const auth = firebase.auth();
 
 auth.onAuthStateChanged(function(user) {
     if (user) {

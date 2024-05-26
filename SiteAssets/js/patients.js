@@ -86,7 +86,6 @@ $(() => {
             <div class="card-body">
                 <div class="card-subsection-title">
                     <h5>${patient.name}</h5>
-                    <p class="text-muted">patient-id: ${patient.PatientID}</p>
                 </div>
                 <div class="card-subsection-body">
                     <label class="text-muted">age</label>
@@ -110,7 +109,6 @@ $(() => {
         const row = document.createElement('tr');
 
         row.innerHTML = `
-        <td>${patient.PatientID}</td>
         <td><img class="rounded-circle" src="../SiteAssets/images/people.svg" loading="lazy" /><span class="ml-2">${patient.name}</span></td>
         <td>${patient.age}</td>
         <td>${patient.birth}</td>
@@ -141,6 +139,7 @@ $(() => {
                 alert('Patient deleted successfully.');
                 // Optionally, remove the patient element from the DOM
                 $(`.delete-patient-btn[data-patient-id="${patientId}"]`).closest('.card').remove();
+                window.location.reload();
             }).catch(function(error) {
                 alert('Error deleting patient: ' + error.message);
             });

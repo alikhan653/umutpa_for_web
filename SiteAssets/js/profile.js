@@ -5,13 +5,22 @@ function loadProfile() {
     var user = auth.currentUser;
     if (user) {
         var userId = user.uid;
-        database.ref('Doctors/' + userId).once('value').then(function(snapshot) {
+        database.ref('Users/' + userId).once('value').then(function(snapshot) {
             var data = snapshot.val();
-            document.querySelector('input[name="firstName"]').value = data.name;
+            console.log(data);
+            document.querySelector('input[name="firstName"]').value = data.first_name;
             document.querySelector('input[name="email"]').value = data.email;
 
             if (data.profilePicture) {
                 document.querySelector('.profile-picture-img').src = data.profilePicture;
+            }
+        });
+        database.ref('Users/' + userId).once('value').then(function(snapshot) {
+            var data = snapshot.val();
+            console.log(data);
+
+            if (data.imageUrl) {
+                document.querySelector('.profile-picture-img').src = data.imageUrl;
             }
         });
     } else {

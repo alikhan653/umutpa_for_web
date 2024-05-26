@@ -13,16 +13,17 @@ auth.onAuthStateChanged(function (user) {
                 var userData = snapshot.val();
                 var userName = userData.first_name;
                 var userImg = userData.imageUrl;
-                console.log("User's name is1: " + userName);
                 document.getElementById("usernamePlaceholder").innerHTML = email_id;
                 document.getElementById("personImage").src = userImg;
+                if(document.getElementById("div-name")){
+                    document.getElementById("div-name").innerText = userName;
+                }
             } else {
                 console.log("No data available for the specified user ID");
             }
         }).catch((error) => {
             console.error("Error fetching data: ", error);
         });
-        document.getElementById("usernamePlaceholder").innerHTML =  email_id;
     } else {
         window.location.href = "login.html";
     }
