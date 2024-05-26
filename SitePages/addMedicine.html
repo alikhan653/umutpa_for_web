@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Medications</title>
+    <link rel="stylesheet" href="../../../../Downloads/admin/medicine.css">
+
+
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+    <script type="text/javascript" src="../../../../Downloads/admin/js/firebaseconf.js"></script>
+    <script type="text/javascript" src="../../../../Downloads/admin/js/adminMedications.js"></script>
+</head>
+
+<body>
+                    <div class="container mt-5">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <div class="card">
+                                    <h1>Manage Medications</h1>
+                                    <div class="card-body">
+                                        <!-- Form to add new medication -->
+                                        <form id="adminMedicationForm">
+                                            <div class="form-group">
+                                                <label for="medicationName">Medication Name:</label>
+                                                <input type="text" id="medicationName" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="medicationDescription">Description:</label>
+                                                <textarea id="medicationDescription" class="form-control"
+                                                    required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Add Medication</button>
+                                        </form>
+
+                                        <!-- Table to display medications -->
+                                        <div class="table-responsive mt-4">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Description</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="medicationsList">
+                                                    <!-- Medications will be populated here dynamically -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+</body>
+
+</html>

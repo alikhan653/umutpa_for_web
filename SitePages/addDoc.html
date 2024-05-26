@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="title icon" href="images/title-img.png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+        integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="../../../../Downloads/admin/admin.css">
+
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+    <script type="text/javascript" src="../../../../Downloads/admin/js/firebaseconf.js"></script>
+    <script type="text/javascript" src="../SiteAssets/js/admin.js"></script>
+    <title>Admin Dashboard</title>
+</head>
+
+<body>
+    <!------Navbar---------->
+    <nav class="navbar navbar-expand-md navbar-light">
+        <button class="navbar-toggler ml-auto mb-2 bg-light" type="button" data-toggle="collapse"
+            data-target="#myNavbar">
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <div class="container-fluid">
+                <div class="row">
+
+                    <!------Sidebar---------->
+                    <div class=" col-xl-2 col-lg-3 col-md-4 sidebar fixed-top">
+                        <a href="#"
+                            class="navbar-brand text-white d-block mx-auto text-center py-3 mb-4 bottom-border">My
+                            Admin</a>
+                        <div class="bottom-border pb-3">
+                            <a href="#" class="text-white">Admin</a>
+                        </div>
+                        <ul class="navbar-nav flex-column mt-4">
+                            <li class="nav-item"><a href="addpat.html" class="nav-link text-white p-2 mb-2"><i
+                                        class="fas fa-user text-light fa-lg mr-3"></i>Add patients</a></li>
+                            <li class="nav-item"><a href="addDoc.html" class="nav-link text-white p-2 mb-2 current"><i
+                                        class="fas fa-user text-light fa-lg mr-3"></i>Add doctors</a></li>
+                            <li class="nav-item"><a href="addMedicine.html" class="nav-link text-white p-2 mb-2"><i
+                                        class="fas fa-home text-light fa-lg mr-3"></i>Add medicine</a></li>
+                            <li class="nav-item"><a href="admin.html" class="nav-link text-white p-2 mb-2"><i
+                                        class="fas fa-home text-light fa-lg mr-3"></i>Dashboard</a></li>
+                        </ul>
+                    </div>
+                    <div class="container mt-5">
+                        <div class="row justify-content-center">
+                            <div class="col-md-9">
+                                <div class="card">
+                                    <h1>Add New Doctor</h1>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="patientName">Name:</label>
+                                            <input type="text" id="doctorName" class="form-control"
+                                                placeholder="Enter name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="patientName">Email:</label>
+                                            <input type="text" id="doctorEmail" class="form-control"
+                                                placeholder="Enter email" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="patientName">Password:</label>
+                                            <input type="password" id="doctorPass" class="form-control"
+                                                placeholder="Enter password" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Add Doctor</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    </nav>
+</body>
+
+</html>
