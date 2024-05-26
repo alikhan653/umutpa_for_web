@@ -362,8 +362,8 @@ input, .form-control {
   padding: 1em 0;
 }
 .section .card .card-body .sub-section .sub-section-body .custom-control-input:checked ~ .custom-control-label::before {
-  background-color: #a8001f;
-  border-color: #a8001f;
+  background-color: #0053a0;
+  border-color: #0053a0;
 }
 
 @media only screen and (max-width: 600px) {

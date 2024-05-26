@@ -9,6 +9,7 @@ auth.onAuthStateChanged(function(user) {
         appointmentForm.addEventListener('submit', function(event) {
             event.preventDefault();
 
+            // Get form values
             const patientSelect = document.getElementById('patient-select');
             const patientId = patientSelect.value;
             const name = patientSelect.options[patientSelect.selectedIndex].text;
@@ -16,8 +17,8 @@ auth.onAuthStateChanged(function(user) {
             const time = document.getElementById('time').value;
             const place = document.getElementById('place').value;
             const description = document.getElementById('description').value;
-            const userId = user.uid;
 
+            // Create a new appointment object
             const newAppointment = {
                 patientId: patientId,
                 name: name,
@@ -26,30 +27,22 @@ auth.onAuthStateChanged(function(user) {
                 place: place,
                 description: description
             };
-            const newAppointment1 = {
-                doctorId: userId,
-                name: name,
-                date: date,
-                time: time,
-                place: place,
-                description: description
-            };
 
-            const appointmentsRef1 = firebase.database().ref('Users/' + patientId + '/Appointments');
-            appointmentsRef1.push(newAppointment1)
-
+            // Add the new appointment to the collection
+            const userId = user.uid;
             const appointmentsRef = firebase.database().ref('Doctors/' + userId + '/Appointments');
             appointmentsRef.push(newAppointment)
                 .then(function() {
+                    // Reset form after successful submission
                     appointmentForm.reset();
                     alert('New appointment added successfully!');
+                    // Redirect to appointments.html
                     window.location.href = 'appointments.html';
                 })
                 .catch(function(error) {
                     console.error('Error adding new appointment: ', error);
                     alert('Error adding new appointment. Please try again.');
                 });
-
         });
 
         // Add event listener for patient select change
@@ -65,27 +58,21 @@ function fetchPatientsList(user) {
     const patientsRef = firebase.database().ref('Doctors/' + user.uid + '/Patients');
     patientsRef.once('value').then((snapshot) => {
         if (snapshot.exists()) {
+            const patients = snapshot.val();
             const patientsSelect = document.getElementById('patient-select');
 
             patientsSelect.innerHTML = '';
-            snapshot.forEach((patientSnapshot) => {
-                const patientId = patientSnapshot.key;
-                console.log("Patient ID:", patientId);
-                const patientDataRef = firebase.database().ref('Users/' + patientId);
 
-                patientDataRef.once('value').then((patientDataSnapshot) => {
-                    if(patientDataSnapshot.exists()) {
-                        const patientData = patientDataSnapshot.val();
-                        console.log("Patient data:", patientData);
-                        const patientName = patientData.name;
-                        const option = document.createElement('option');
-                        option.value = patientId;
-                        option.textContent = patientName;
-                        patientsSelect.appendChild(option);
-                    }
-                });
-            });
-
+            for (const patientId in patients) {
+                if (patients.hasOwnProperty(patientId)) {
+                    const patient = patients[patientId];
+                    const option = document.createElement('option');
+                    option.value = patientId;
+                    option.textContent = patient.name;
+                    option.setAttribute('data-stage', patient.stage || 'first');
+                    patientsSelect.appendChild(option);
+                }
+            }
         } else {
             console.log("No patients data available");
         }

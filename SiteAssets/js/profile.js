@@ -1,4 +1,3 @@
-var auth = firebase.auth();
 var database = firebase.database();
 
 // Function to load profile data
@@ -75,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.querySelector('.profile-picture-img').src = downloadURL;
 
                 // Save the download URL to the database
-                database.ref('Doctors/' + user.uid + '/profilePicture').set(downloadURL);
+                database.ref('Users/' + user.uid + '/profilePicture').set(downloadURL);
             });
         }).catch(function(error) {
             alert('Error uploading profile picture: ' + error.message);

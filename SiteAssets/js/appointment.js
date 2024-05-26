@@ -33,9 +33,7 @@ auth.onAuthStateChanged(function (user) {
         }).catch((error) => {
             console.log("Error fetching user data:", error);
         });
-    } else {
-        window.location.href = "login.html";
-    }
+    } 
 });
 
 function fetchPatientsData(user) {

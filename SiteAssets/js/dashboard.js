@@ -1,34 +1,5 @@
 
-const auth = firebase.auth();
-console.log(auth.currentUser);
-auth.onAuthStateChanged(function (user) {
-	if (user) {
-		var email_id = user.email;
-		var userId = user.uid;
-		fetchPatientsData(user);
-		setPatientData(user);
 
-		console.log(user.uid);
-		var dbRef = firebase.database().ref('Users/' + userId);
-
-		dbRef.once('value').then((snapshot) => {
-			if (snapshot.exists()) {
-				var userData = snapshot.val();
-				var userName = userData.name;
-				console.log("User's name is: " + userName);
-				document.getElementById("div-name").innerText = userName.split(" ")[0];
-				document.getElementById("usernamePlaceholder").innerHTML = email_id;
-			} else {
-				console.log("No data available for the specified user ID");
-			}
-		}).catch((error) => {
-			console.error("Error fetching data: ", error);
-		});
-		document.getElementById("usernamePlaceholder").innerHTML =  email_id;
-	} else {
-		window.location.href = "login.html";
-	}
-});
 
 function setPatientData(user) {
 	var patientsRef = firebase.database().ref('Doctors/' + user.uid + '/Patients');
