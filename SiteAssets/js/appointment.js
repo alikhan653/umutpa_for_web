@@ -5,63 +5,50 @@ auth.onAuthStateChanged(function (user) {
         var userId = user.uid;
 
         console.log(user.uid);
-        var dbRef = firebase.database().ref('Users/' + userId);
+        var doctorRef = firebase.database().ref('Doctors/' + userId + '/Patients');
 
-        dbRef.once('value').then((snapshot) => {
-            if (snapshot.exists()) {
-                var userData = snapshot.val();
-                var userName = userData.name;
-                console.log("User's name is: " + userName);
+        doctorRef.once('value').then((doctorSnapshot) => {
+            doctorSnapshot.forEach(function(childSnapshot) {
+                var childKey = childSnapshot.key;
+                console.log("ChildKey "+childKey);
 
-                const divName = document.getElementById("div-name");
-                const usernamePlaceholder = document.getElementById("usernamePlaceholder");
+                var dbRef = firebase.database().ref('Users/' + childKey + "/Appointments");
 
-                if (divName) {
-                    divName.innerText = userName.split(" ")[0];
-                }
+                dbRef.once('value').then((snapshot) => {
+                    if (snapshot.exists()) {
+                        var userData = snapshot.val();
+                        var userName = userData.name;
+                        console.log("User's name is: " + userName);
 
-                if (usernamePlaceholder) {
-                    usernamePlaceholder.innerHTML = email_id;
-                }
-
-                fetchPatientsData(user);
-                fetchPatientsList(user); // Fetch the list of patients for the dropdown
-            } else {
-                console.log("No data available for the specified user ID");
-            }
-        }).catch((error) => {
-            console.log("Error fetching user data:", error);
+                        fetchPatientsData(userData);
+                        fetchPatientsList(userData);
+                    } else {
+                        console.log("No data available for the specified user ID");
+                    }
+                }).catch((error) => {
+                    console.log("Error fetching user data:", error);
+                });
+            });
         });
     } 
 });
 
-function fetchPatientsData(user) {
-    const appointmentsRef = firebase.database().ref('Doctors/' + user.uid + '/Appointments');
-    appointmentsRef.once('value').then((snapshot) => {
-        if (snapshot.exists()) {
-            const appointments = snapshot.val();
-            
-            // Convert object to array for sorting
-            const appointmentsArray = Object.entries(appointments).map(([key, value]) => ({ id: key, ...value }));
-            
-            // Sort appointments by date and time
-            appointmentsArray.sort((a, b) => new Date(a.date + ' ' + a.time) - new Date(b.date + ' ' + b.time));
+function fetchPatientsData(appointments) {
 
-            const tableViewBody = document.querySelector('#appoint-app');
+    const appointmentsArray = Object.entries(appointments).map(([key, value]) => ({ id: key, ...value }));
 
-            tableViewBody.innerHTML = '';
+    // Sort appointments by date and time
+    appointmentsArray.sort((a, b) => new Date(a.date + ' ' + a.time) - new Date(b.date + ' ' + b.time));
 
-            for (const appointment of appointmentsArray) {
-                const appointmentRow = createAppointmentTableRow(appointment);
+    const tableViewBody = document.querySelector('#appoint-app');
 
-                tableViewBody.appendChild(appointmentRow);
-            }
-        } else {
-            console.log("No appointments data available");
-        }
-    }).catch((error) => {
-        console.log("Error fetching appointments data:", error);
-    });
+    tableViewBody.innerHTML = '';
+
+    for (const appointment of appointmentsArray) {
+        const appointmentRow = createAppointmentTableRow(appointment);
+
+        tableViewBody.appendChild(appointmentRow);
+    }
 }
 
 function fetchPatientsList(user) {
@@ -97,11 +84,10 @@ function createAppointmentTableRow(appointment) {
         <td>${appointment.name}</td>
         <td>${appointment.date}</td>
         <td>${appointment.time}</td>
-        <td>${appointment.stage}</td>
         <td>${appointment.place}</td>
         <td>${appointment.description}</td>
         <td><a class="view-more btn btn-sm btn-dark-f" href="details.html?patientId=${appointment.patientId}">view profile</a></td>
-        <button class="delete-appointment btn btn-sm btn-danger" data-appointment-id="${appointment.id}">Delete Appointment</button>
+        <button class="delete-appointment btn btn-sm btn-danger" data-appointment-id="${appointment.id}" data-patient-id="${appointment.patientId}">Delete Appointment</button>
     `;
 
     return appointmentRow;
@@ -109,16 +95,18 @@ function createAppointmentTableRow(appointment) {
 
 document.addEventListener('click', function(event) {
     if (event.target.classList.contains('delete-appointment')) {
+        console.log('Delete appointment button clicked!' + event.target.getAttribute('data-appointment-id') + ' ' + event.target.getAttribute('data-patient-id'));
         const appointmentId = event.target.getAttribute('data-appointment-id');
-        deleteAppointment(appointmentId);
+        const patientId = event.target.getAttribute('data-patient-id');
+        deleteAppointment(appointmentId, patientId);
         location.reload();
     }
 });
 
-function deleteAppointment(appointmentId) {
+function deleteAppointment(appointmentId, patientId) {
     const user = firebase.auth().currentUser;
     if (user) {
-        const appointmentsRef = firebase.database().ref('Doctors/' + user.uid + '/Appointments/' + appointmentId);
+        const appointmentsRef = firebase.database().ref('Users/' + patientId + '/Appointments/' + appointmentId);
         appointmentsRef.remove()
             .then(function() {
                 console.log('Appointment deleted successfully!');

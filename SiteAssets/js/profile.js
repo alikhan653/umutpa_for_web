@@ -11,16 +11,8 @@ function loadProfile() {
             document.querySelector('input[name="firstName"]').value = data.first_name;
             document.querySelector('input[name="email"]').value = data.email;
 
-            if (data.profilePicture) {
-                document.querySelector('.profile-picture-img').src = data.profilePicture;
-            }
-        });
-        database.ref('Users/' + userId).once('value').then(function(snapshot) {
-            var data = snapshot.val();
-            console.log(data);
-
             if (data.imageUrl) {
-                document.querySelector('.profile-picture-img').src = data.imageUrl;
+                document.querySelector('.profile-picture-img').src = data.profilePicture;
             }
         });
     } else {
@@ -28,7 +20,6 @@ function loadProfile() {
     }
 }
 
-// Function to change password
 function changePassword() {
     var user = auth.currentUser;
     var currentPassword = document.querySelector('input[name="currentPassword"]').value;

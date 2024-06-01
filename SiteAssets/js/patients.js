@@ -77,11 +77,13 @@ $(() => {
     function createPatientCard(patient, patientId) {
         const card = document.createElement('div');
         card.className = 'col-md-4';
-
+        if(patient.imageUrl == null){
+            patient.imageUrl = "../SiteAssets/images/people.svg";
+        }
         card.innerHTML = `
         <div class="card">
             <div class="card-header">
-                <div class="card-img-top"><img class="rounded-circle" src="../SiteAssets/images/people.svg" loading="lazy" /><a class="view-more" href="details.html">view profile</a></div>
+                <div class="card-img-top"><img class="rounded-circle" src="${patient.imageUrl}" loading="lazy" /><a class="view-more" href="details.html?patientId=${patientId}">view profile</a></div>
             </div>
             <div class="card-body">
                 <div class="card-subsection-title">
@@ -97,7 +99,7 @@ $(() => {
                 </div>
             </div>
             <div class="card-footer">
-                <button class="btn btn-danger delete-patient-btn" data-patient-id="${patientId}"><i class="las la-trash"></i></button>
+                <button class="btn btn-danger delete-patient-btn" data-patient-id="${patientId}"><i class="las la-minus"></i></button>
             </div>
         </div>
         `;
@@ -107,14 +109,16 @@ $(() => {
 
     function createPatientTableRow(patient, patientId) {
         const row = document.createElement('tr');
-
+        if(patient.imageUrl == null){
+            patient.imageUrl = "../SiteAssets/images/people.svg";
+        }
         row.innerHTML = `
-        <td><img class="rounded-circle" src="../SiteAssets/images/people.svg" loading="lazy" /><span class="ml-2">${patient.name}</span></td>
+        <td><img class="rounded-circle" src="${patient.imageUrl}" loading="lazy" /><span class="ml-2">${patient.name}</span></td>
         <td>${patient.age}</td>
         <td>${patient.birth}</td>
         <td>${patient.stage}</td>
-        <td><a class="view-more btn btn-sm btn-dark-blue" href="details.html">view profile</a></td>
-        <td><button class="btn btn-danger delete-patient-btn" data-patient-id="${patientId}"><i class="las la-trash"></i></button></td>
+        <td><a class="view-more btn btn-sm btn-dark-blue" href="details.html?patientId=${patientId}">view profile</a></td>
+        <td><button class="btn btn-danger delete-patient-btn" data-patient-id="${patientId}"><i class="las la-minus"></i></button></td>
         `;
 
         return row;

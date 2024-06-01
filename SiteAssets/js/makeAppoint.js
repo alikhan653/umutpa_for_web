@@ -19,6 +19,7 @@ auth.onAuthStateChanged(function(user) {
 
             // Create a new appointment object
             const newAppointment = {
+                doctorId: user.uid,
                 patientId: patientId,
                 name: name,
                 date: date,
@@ -29,7 +30,7 @@ auth.onAuthStateChanged(function(user) {
 
             // Add the new appointment to the collection
             const userId = user.uid;
-            const appointmentsRef = firebase.database().ref('Doctors/' + userId + '/Appointments');
+            const appointmentsRef = firebase.database().ref('Users/' + patientId + '/Appointments');
             appointmentsRef.push(newAppointment)
                 .then(function() {
                     // Reset form after successful submission

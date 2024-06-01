@@ -29,10 +29,10 @@ function addPatientRow(patient) {
 	}
 	row.innerHTML = `
     <td><img class="rounded-circle" src="${patient.imageUrl}" loading="lazy" /></td>
-    <td><p>${patient.email}</p></td>
-    <td><p class="text-muted">${patient.name}</p></td>
+    <td><p>${patient.name}</p></td>
+    <td><p class="text-muted">${patient.stage}</p></td>
     <td class="text-right"><p>${patient.phone}</p></td>
-    <td class="text-right"><button class="btn btn-dark-blue-f btn-sm">appointment</button></td>
+    <td class="text-right"><button class="btn btn-dark-blue-f btn-sm" onclick="location.href='makeAppoint.html'">appointment</button></td>
     <td><button class="btn btn-sm"><i class="las la-ellipsis-h"></i></button></td>
   `;
 
@@ -66,13 +66,25 @@ function addAppointmentRow(appointment) {
 function fetchPatientsData(doctor) {
 	const doctorPatientsRef = firebase.database().ref('Doctors/' + doctor.uid + '/Patients');
 
+	const tableBody = document.getElementById('patients-table-body');
+	const row = document.createElement('tr');
+	row.innerHTML = `
+	<th scope="col"></th>
+	<th scope="col">Patient</th>
+	<th scope="col">Stage</th>
+	<th scope="col" class="text-right">Phone</th>
+	<th scope="col" class="text-right">Appointment</th>
+	<th scope="col"></th>
+	`;
+
+	tableBody.appendChild(row);
+
 	doctorPatientsRef.once('value').then((snapshot) => {
 		snapshot.forEach((patientSnapshot) => {
 			const patientId = patientSnapshot.key;
 			const patientDataRef = firebase.database().ref('Users/' + patientId);
 
 			patientDataRef.once('value').then((patientDataSnapshot) => {
-				console.log("TEST2" + doctorPatientsRef);
 				const patient = patientDataSnapshot.val();
 				addPatientRow(patient);
 			}).catch((error) => {

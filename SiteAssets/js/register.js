@@ -30,7 +30,7 @@ function registration() {
         email: user_email,
         first_name: first_name,
         last_name: last_name,
-        number: number,
+        phone: number,
         position: position,
         role: role,
         imageUrl: "gs://umutpa-7caa0.appspot.com/ESbg4CXjMsQNdwzhXybiKeSKv2u2/profile.png"//TODO: Add default image

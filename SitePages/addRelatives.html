@@ -15,7 +15,7 @@
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
     <script type="text/javascript" src="../../../../Downloads/umutpa_for_web-master/SiteAssets/js/firebaseconf.js"></script>
     <script type="text/javascript" src="../SiteAssets/js/userData.js"></script>
-    <script type="text/javascript" src="../SiteAssets/js/addDoc.js"></script>
+    <script type="text/javascript" src="../SiteAssets/js/addRelatives.js"></script>
 
     <title>Admin Dashboard</title>
 </head>
@@ -55,10 +55,11 @@
                         patients</span></a><a class="list-group-item" href="addMedicine.html" data-toggle="tooltip"
                                               data-placement="bottom" title="Patients"><i class="las la-medkit la-lw"></i><span>Add
                         medicine</span></a><a class="list-group-item" href="addDoc.html" data-toggle="tooltip"
-                    data-placement="bottom" title="Specialists"><i class="las la-user"></i><span>Add
+                                              data-placement="bottom" title="Specialists"><i class="las la-user"></i><span>Add
                         doctors</span></a><a class="list-group-item" href="addRelatives.html" data-toggle="tooltip"
-                                             data-placement="bottom" title="Relatives"><i class="las la-user"></i><span>Add
+                        data-placement="bottom" title="Relatives"><i class="las la-user"></i><span>Add
                         relatives</span></a>
+
                 <hr class="divider" />
 
             </ul>
@@ -76,45 +77,36 @@
                     <div class="row justify-content-center">
                         <div class="col-md-9">
                             <div class="card">
-                                <h1>Add New Doctor</h1>
+                                <h1>Add New Relatives</h1>
                                 <div class="card-body">
-                                    <form id="addDocForm">
+                                    <form id="addRelativeForm">
                                         <div class="form-group">
-                                            <label for="profilePicture">Profile Picture:</label>
-                                            <input type="file" id="profilePicture" class="form-control-file"
-                                                accept="image/*">
+                                            <label for="patientSelect">Select Patient:</label>
+                                            <select id="patientSelect" class="form-control" required>
+                                                <!-- Patient options will be loaded here -->
+                                            </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="demail">Email:</label>
-                                            <input type="text" id="demail" class="form-control"
-                                                placeholder="Enter email" required>
+                                            <label for="rEmail">Email:</label>
+                                            <input type="text" id="rEmail" class="form-control" placeholder="Enter email" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="fName">First Name:</label>
-                                            <input type="text" id="fName" class="form-control"
-                                                placeholder="Enter first name" required>
+                                            <label for="rFirstName">First Name:</label>
+                                            <input type="text" id="rFirstName" class="form-control" placeholder="Enter first name" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="lName">Last Name:</label>
-                                            <input type="text" id="lName" class="form-control"
-                                                placeholder="Enter last name" required>
+                                            <label for="rLastName">Last Name:</label>
+                                            <input type="text" id="rLastName" class="form-control" placeholder="Enter last name" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="phone">Phone:</label>
-                                            <input type="text" id="phone" class="form-control"
-                                                placeholder="Enter phone number" required>
+                                            <label for="rPhone">Phone:</label>
+                                            <input type="text" id="rPhone" class="form-control" placeholder="Enter phone number" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="position">Position:</label>
-                                            <input type="text" id="position" class="form-control"
-                                                placeholder="Enter position" required>
+                                            <label for="rRelationship">Relationship:</label>
+                                            <input type="text" id="rRelationship" class="form-control" placeholder="Enter relationship" required>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="password">Password:</label>
-                                            <input type="password" id="password" class="form-control"
-                                                placeholder="Enter password" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Add Doctor</button>
+                                        <button type="submit" class="btn btn-primary">Add Relative</button>
                                     </form>
                                 </div>
                             </div>
@@ -124,17 +116,18 @@
                         <div class="col-md-9">
                             <div class="card">
                                 <div class="card-header">
-                                    <h2>Doctors</h2>
+                                    <h2>Relatives</h2>
                                 </div>
-                                <div class="doctors-table-view">
+                                <div class="relatives-table-view">
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Email</th>
+                                                <th>Patient</th>
                                                 <th>First Name</th>
                                                 <th>Last Name</th>
                                                 <th>Phone</th>
-                                                <th>Position</th>
+                                                <th>Relationship</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
