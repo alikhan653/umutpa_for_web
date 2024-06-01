@@ -1,19 +1,26 @@
 const translations = {
     en: {
-        welcome: "Welcome to your dashboard",
+        welcome: "Welcome to our website",
         about: "About Us",
-        contact: "Contact"
+        contact: "Contact",
+        phone: "Phone"
     },
-    es: {
-        welcome: "Bienvenido a nuestro sitio web",
-        about: "Sobre nosotros",
-        contact: "Contacto"
+    ru: {
+        welcome: "Добро пожаловать на наш сайт",
+        about: "О нас",
+        contact: "Контакт",
+        phone: "Телефон"
     },
-    // Add more languages as needed
+    kz: {
+        welcome: "Біздің веб-сайтымызға қош келдіңіз",
+        about: "Біз туралы",
+        contact: "Байланыс",
+        phone: "Телефон"
+    },
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    const languageSwitcher = document.getElementById('languageSwitcher');
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
     const translatableElements = document.querySelectorAll('[data-translate]');
 
     function updateContent(language) {
@@ -23,14 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    languageSwitcher.addEventListener('change', (event) => {
-        const selectedLanguage = event.target.value;
-        updateContent(selectedLanguage);
-        localStorage.setItem('preferredLanguage', selectedLanguage); // Save the preference
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', (event) => {
+            const selectedLanguage = event.target.getAttribute('data-lang');
+            updateContent(selectedLanguage);
+            localStorage.setItem('preferredLanguage', selectedLanguage); // Save the preference
+        });
     });
 
     // Initialize content with preferred language or default to 'en'
     const preferredLanguage = localStorage.getItem('preferredLanguage') || 'en';
-    languageSwitcher.value = preferredLanguage;
     updateContent(preferredLanguage);
 });

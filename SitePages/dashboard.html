@@ -10,7 +10,6 @@
     <script src="../SiteAssets/js/vendors/jquery.min.js"></script>
     <script src="../SiteAssets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="../SiteAssets/js/global.js"></script>
-    <script src="../SiteAssets/js/lang.js"></script>
     <link rel="stylesheet" href="../SiteAssets/css/pages/dashboard.css" />
 </head>
 
@@ -26,13 +25,23 @@
                             style="float:right;margin-bottom:-10px;"></span><i class="las la-bell"></i></a>
                         <div class="dropdown-menu notification-dropdown-menu shadow-lg"
                              aria-labelledby="notification-dropdown">
-                            <div class="dropdown-title"><a href="">notifications<span
+                            <div class="dropdown-title"><a href="" data-translate="notification"><span
                                     class="ml-2 notifications-count">(3)</span></a><a class="float-right"
                                                                                       href="">mark all as read</a></div>
                             <div class="dropdown-footer text-center"><a href="notifications.html">view more</a></div>
                         </div>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="las la-globe"></i> Language
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                            <a class="dropdown-item" data-lang="en">English</a>
+                            <a class="dropdown-item" data-lang="ru">Русский</a>
+                            <a class="dropdown-item" data-lang="kz">Қазақша</a>
+                        </div>
+                    </li>
+
                     <li class="nav-item">
                         <div class="nav-link"><span class="vertical-divider"></span></div>
                     </li>
@@ -198,6 +207,8 @@
     <script type="text/javascript" src="../SiteAssets/js/logout.js"></script>
     <script type="text/javascript" src="../SiteAssets/js/userData.js"></script>
     <script type="text/javascript" src="../SiteAssets/js/dashboard.js"></script>
+    <script type="text/javascript" src="../SiteAssets/js/lang.js"></script>
+
 
 
 </body>

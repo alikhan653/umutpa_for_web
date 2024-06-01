@@ -7,7 +7,7 @@ auth.onAuthStateChanged(function (user) {
 		const patientId = getUrlParameter('patientId');
 		fetchPatientsData(patientId);
 		fetchUpcomingAppointments(patientId, userId);
-		// displayPatientMedications(patientId);
+		displayPatientMedications(patientId);
 
 		var dbRef = firebase.database().ref('Users/' + userId);
 
