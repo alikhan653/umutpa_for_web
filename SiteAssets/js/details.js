@@ -221,13 +221,14 @@ function createMedicationHTML(medication) {
 	return `
 		<div class="media">
             <div class="align-self-center mr-3">
-                <img class="rounded-circle medication-img" src="../SiteAssets/images/person.jpg" loading="lazy" />
+                <img class="rounded-circle medication-img" src="${medication.imageUrl}" loading="lazy" />
             </div>
             <div class="media-body">
                 <div class="row">
-                    <label class="label-blue-bl">${medication.dosage}</label>
-                    <p>${medication.frequency}</p>
+                    <label class="label-blue-bl">${medication.name}</label>
+                    <p>${medication.description}</p>
                     <p><i class="las la-clock"></i>${medication.medtime}</p>
+                    <p><i class="las la-notes-medical"></i>${medication.dosage}</p>
                    
                     <a href=""><i class="las la-ellipsis-v"></i></a>
                 </div>

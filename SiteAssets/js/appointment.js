@@ -1,4 +1,3 @@
-
 auth.onAuthStateChanged(function (user) {
     if (user) {
         var email_id = user.email;
@@ -8,33 +7,57 @@ auth.onAuthStateChanged(function (user) {
         var doctorRef = firebase.database().ref('Doctors/' + userId + '/Patients');
 
         doctorRef.once('value').then((doctorSnapshot) => {
+            let allAppointments = [];
+
+            let patientPromises = [];
             doctorSnapshot.forEach(function(childSnapshot) {
                 var childKey = childSnapshot.key;
-                console.log("ChildKey "+childKey);
+                console.log("ChildKey " + childKey);
 
                 var dbRef = firebase.database().ref('Users/' + childKey + "/Appointments");
 
-                dbRef.once('value').then((snapshot) => {
-                    if (snapshot.exists()) {
-                        var userData = snapshot.val();
-                        var userName = userData.name;
-                        console.log("User's name is: " + userName);
+                // Add the promise to the array
+                patientPromises.push(
+                    dbRef.once('value').then((snapshot) => {
+                        if (snapshot.exists()) {
+                            var userData = snapshot.val();
+                            console.log("User's appointments: ", userData);
+                            allAppointments.push({
+                                patientId: childKey,
+                                appointments: userData
+                            });
+                        } else {
+                            console.log("No data available for the specified user ID");
+                        }
+                    }).catch((error) => {
+                        console.log("Error fetching user data:", error);
+                    })
+                );
+            });
 
-                        fetchPatientsData(userData);
-                        fetchPatientsList(userData);
-                    } else {
-                        console.log("No data available for the specified user ID");
-                    }
-                }).catch((error) => {
-                    console.log("Error fetching user data:", error);
+            // Wait for all promises to resolve
+            Promise.all(patientPromises).then(() => {
+                console.log("All Appointments: ", allAppointments);
+
+                let aggregatedAppointments = {};
+                allAppointments.forEach(appointmentData => {
+                    Object.keys(appointmentData.appointments).forEach(appointmentId => {
+                        const appointment = appointmentData.appointments[appointmentId];
+                        aggregatedAppointments[appointmentId] = {
+                            ...appointment,
+                            patientId: appointmentData.patientId
+                        };
+                    });
                 });
+
+                fetchPatientsData(aggregatedAppointments);
+                fetchPatientsList(user);
             });
         });
-    } 
+    }
 });
 
 function fetchPatientsData(appointments) {
-
     const appointmentsArray = Object.entries(appointments).map(([key, value]) => ({ id: key, ...value }));
 
     // Sort appointments by date and time

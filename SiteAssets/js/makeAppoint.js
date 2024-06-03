@@ -28,14 +28,12 @@ auth.onAuthStateChanged(function(user) {
                 description: description
             };
 
-            // Add the new appointment to the collection
             const userId = user.uid;
             const appointmentsRef = firebase.database().ref('Users/' + patientId + '/Appointments');
             appointmentsRef.push(newAppointment)
                 .then(function() {
                     appointmentForm.reset();
                     alert('New appointment added successfully!');
-                    // Redirect to appointments.html
                     window.location.href = 'appointments.html';
                 })
                 .catch(function(error) {
