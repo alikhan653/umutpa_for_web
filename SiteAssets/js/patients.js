@@ -99,7 +99,7 @@ $(() => {
                 </div>
             </div>
             <div class="card-footer">
-                <button class="btn btn-danger delete-patient-btn" data-patient-id="${patientId}"><i class="las la-minus"></i></button>
+                <button class="btn btn-secondary delete-patient-btn" data-patient-id="${patientId}">Delete</button>
             </div>
         </div>
         `;
@@ -118,7 +118,7 @@ $(() => {
         <td>${patient.birth}</td>
         <td>${patient.stage}</td>
         <td><a class="view-more btn btn-sm btn-dark-blue" href="details.html?patientId=${patientId}">view profile</a></td>
-        <td><button class="btn btn-danger delete-patient-btn" data-patient-id="${patientId}"><i class="las la-minus"></i></button></td>
+        <td><button class="btn btn-secondary delete-patient-btn" data-patient-id="${patientId}">Delete</button></td>
         `;
 
         return row;

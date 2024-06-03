@@ -189,22 +189,22 @@ i {
 }
 
 .btn-dark-blue-f {
-  background-color: #00417c;
+  background-color: #00AA81;
   color: white;
 }
 .btn-dark-blue-f:hover, .btn-dark-blue-f:focus {
   background-color: transparent;
-  border: 1.5px solid #00417c;
-  color: #00417c;
+  border: 1.5px solid #00AA81;
+  color: #00AA81;
 }
 
 .btn-dark-blue-o {
   background-color: transparent;
-  color: #00417c;
-  border: 1.5px solid #00417c;
+  color: #00AA81;
+  border: 1.5px solid #00AA81;
 }
 .btn-dark-blue-o:hover, .btn-dark-blue-o:focus {
-  background-color: #00417c;
+  background-color: #00AA81;
   border: 1.5px solid transparent;
   color: white;
 }

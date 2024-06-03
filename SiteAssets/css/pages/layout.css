@@ -316,13 +316,13 @@ i {
   font-size: 1.2em;
 }
 .side-nav .list-group .list-group-item:hover, .side-nav .list-group .list-group-item:focus {
-  border: 1.5px solid #0c66b9;
+  border: 1.5px solid #00AA81;
   background: none;
-  color: #0c66b9;
+  color: #00AA81;
   transition: all ease-in-out 150ms;
 }
 .side-nav .list-group .active {
-  background: linear-gradient(90deg, #0c66b9, #0c66b9);
+  background: linear-gradient(90deg, #00AA81, #00AA81);
   color: white;
 }
 .side-nav .list-group .aob-items, .side-nav .list-group .side-nav-footer {

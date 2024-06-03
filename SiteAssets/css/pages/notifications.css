@@ -160,55 +160,55 @@ table thead tr th {
 }
 
 .btn-dark-red-f-gr {
-  background: linear-gradient(90deg, #0c66b9, #0c66b9);
+  background: linear-gradient(90deg, #00AA81, #00AA81);
   color: white;
   border: 1.5px solid transparent;
 }
 .btn-dark-red-f-gr:hover, .btn-dark-red-f-gr:focus {
   background: none;
-  border-color: #0c66b9;
-  color: #0c66b9;
+  border-color: #00AA81;
+  color: #00AA81;
 }
 
 .btn-dark-red-f {
-  background-color: #0c66b9;
+  background-color: #00AA81;
   color: white;
   border: 1.5px solid transparent;
 }
 .btn-dark-red-f:hover, .btn-dark-red-f:focus {
   background: none;
-  border: 1.5px solid #0c66b9;
-  color: #0c66b9;
+  border: 1.5px solid #00AA81;
+  color: #00AA81;
 }
 
 .btn-dark-red-o {
   background-color: transparent;
-  color: #0c66b9;
-  border: 1.5px solid #0c66b9;
+  color: #00AA81;
+  border: 1.5px solid #00AA81;
 }
 .btn-dark-red-o:hover, .btn-dark-red-o:focus {
-  background-color: #0c66b9;
+  background-color: #00AA81;
   border: 1.5px solid transparent;
   color: white;
 }
 
 .btn-dark-blue-f {
-  background-color: #00417c;
+  background-color: #00AA81;
   color: white;
 }
 .btn-dark-blue-f:hover, .btn-dark-blue-f:focus {
   background-color: transparent;
-  border: 1.5px solid #00417c;
-  color: #00417c;
+  border: 1.5px solid #00AA81;
+  color: #00AA81;
 }
 
 .btn-dark-blue-o {
   background-color: transparent;
-  color: #00417c;
-  border: 1.5px solid #00417c;
+  color: #00AA81;
+  border: 1.5px solid #00AA81;
 }
 .btn-dark-blue-o:hover, .btn-dark-blue-o:focus {
-  background-color: #00417c;
+  background-color: #00AA81;
   border: 1.5px solid transparent;
   color: white;
 }
@@ -313,6 +313,23 @@ main .notifications-section .card .card-footer {
   .tags-section .card-body button {
     text-align: left;
   }
+}
+.medication-option {
+  display: flex;
+  align-items: center;
+}
+
+.medication-option img {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.medication-image {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
 }
 
 /*# sourceMappingURL=notifications.css.map */

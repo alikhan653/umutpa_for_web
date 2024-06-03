@@ -131,14 +131,14 @@
 }
 
 .btn-dark-red-f-gr {
-  background: linear-gradient(90deg, #0053a0, #C62128);
+  background: linear-gradient(90deg, #00AA81, #00AA81);
   color: white;
   border: 1.5px solid transparent;
 }
 .btn-dark-red-f-gr:hover, .btn-dark-red-f-gr:focus {
   background: none;
-  border-color: #0073a8;
-  color: #0c66b9;
+  border-color: #00AA81;
+  color: #00AA81;
 }
 
 .btn-dark-red-f {
@@ -164,22 +164,22 @@
 }
 
 .btn-dark-blue-f {
-  background-color: #00417c;
+  background-color: #00AA81;
   color: white;
 }
 .btn-dark-blue-f:hover, .btn-dark-blue-f:focus {
   background-color: transparent;
-  border: 1.5px solid #00417c;
-  color: #00417c;
+  border: 1.5px solid #00AA81;
+  color: #00AA81;
 }
 
 .btn-dark-blue-o {
   background-color: transparent;
-  color: #00417c;
-  border: 1.5px solid #00417c;
+  color: #00AA81;
+  border: 1.5px solid #00AA81;
 }
 .btn-dark-blue-o:hover, .btn-dark-blue-o:focus {
-  background-color: #00417c;
+  background-color: #00AA81;
   border: 1.5px solid transparent;
   color: white;
 }
@@ -251,12 +251,12 @@
 }
 .modal .modal-content .modal-body .carousel .carousel-item .carousel-caption p a {
   margin: 0 0.25em;
-  color: #0c66b9;
+  color: #00AA81;
 }
 .modal .modal-content .modal-body .carousel .carousel-item .carousel-caption p a i {
   display: none;
   font-size: 1em;
-  color: #0c66b9;
+  color: #00AA81;
 }
 .modal .modal-content .modal-body .carousel .carousel-item .carousel-caption p:hover i, .modal .modal-content .modal-body .carousel .carousel-item .carousel-caption p:focus i {
   display: inline-block;
@@ -307,7 +307,7 @@ main .main-content .welcome-section .welcome-content-card .welcome-img-wrapper i
   width: 60%;
 }
 main .main-content .welcome-section .app-stats-card .card-body i {
-  color: #0c66b9;
+  color: #00AA81;
   margin-bottom: 0.25em;
 }
 main .main-content .welcome-section .app-stats-card .card-body h4, main .main-content .welcome-section .app-stats-card .card-body p, main .main-content .welcome-section .app-stats-card .card-body a {
@@ -319,14 +319,14 @@ main .main-content .welcome-section .app-stats-card .card-body a:hover, main .ma
   color: #a8001f;
 }
 main .main-content .functionality-section .section-content .card {
-  background: #0c66b9;
-  background: linear-gradient(0deg, #0c66b9, #0c66b9);
+  background: #00AA81;
+  background: linear-gradient(0deg, #00AA81, #00AA81);
   text-transform: capitalize;
   border-radius: 0;
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
-  border: 1.5px solid #0c66b9;
+  border: 1.5px solid #00AA81;
 }
 main .main-content .functionality-section .section-content .card .card-title {
   padding-top: 1em;
@@ -366,10 +366,10 @@ main .main-content .functionality-section .section-content .card:hover:hover, ma
   animation-direction: alternate;
 }
 main .main-content .functionality-section .section-content .card:hover .card-title i, main .main-content .functionality-section .section-content .card:focus .card-title i {
-  color: #0c66b9;
+  color: #00AA81;
 }
 main .main-content .functionality-section .section-content .card:hover .card-body p, main .main-content .functionality-section .section-content .card:focus .card-body p {
-  color: #0c66b9;
+  color: #00AA81;
 }
 main .main-content .card-summaries .card {
   margin-bottom: 0.5em;
@@ -381,7 +381,7 @@ main .main-content .card-summaries .card .card-body {
   padding: 0.5em;
 }
 main .main-content .card-summaries .card .card-body i {
-  color: #0c66b9;
+  color: #00AA81;
 }
 main .main-content .card-summaries .card .card-body table tr {
   align-items: center;
@@ -421,13 +421,13 @@ main .main-content .card-summaries .card .card-footer .view-more {
 }
 main .main-content .card-summaries .card .card-footer .view-more i {
   margin-left: 1.5em;
-  background-color: #0c66b9;
+  background-color: #00AA81;
   padding: 0.25em;
   color: #f9f9f9;
   border-radius: 50%;
 }
 main .main-content .card-summaries .card .card-footer .view-more:hover, main .main-content .card-summaries .card .card-footer .view-more:focus {
-  border: 1.5px solid #0c66b9;
+  border: 1.5px solid #00AA81;
   transition: all ease-in-out 150ms;
   background-color: transparent;
 }

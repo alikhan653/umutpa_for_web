@@ -2,11 +2,11 @@
 
 <head>
     <title>Medications</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../SiteAssets/css/vendors/bootstrap.min.css" />
-    <link rel="stylesheet" href="../SiteAssets/css/vendors/line-awesome.min.css" />
-    <link rel="stylesheet" href="../SiteAssets/css/pages/layout.css" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../SiteAssets/css/vendors/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../SiteAssets/css/vendors/line-awesome.min.css"/>
+    <link rel="stylesheet" href="../SiteAssets/css/pages/layout.css"/>
     <script src="../SiteAssets/js/vendors/jquery.min.js"></script>
     <script src="../SiteAssets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="../SiteAssets/js/global.js"></script>
@@ -43,7 +43,8 @@
                 </li>
                 <li class="nav-item"><a class="nav-link profile-dropdown" href="#" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                        class="rounded-circle" id="personImage" src="../SiteAssets/images/person.jpg" /><span class="d" id="usernamePlaceholder"></span></a>
+                        class="rounded-circle" id="personImage" src="../SiteAssets/images/person.jpg"/><span class="d"
+                                                                                                             id="usernamePlaceholder"></span></a>
                     <div class="dropdown">
                         <div class="dropdown-menu shadow-lg profile-dropdown-menu"
                              aria-labelledby="profile-dropdown">
@@ -63,15 +64,24 @@
         <ul class="list-group list-group-flush"><a class="list-group-item" href="dashboard.html"
                                                    data-toggle="tooltip" data-placement="bottom" title="Dashboard"><i
                 class="las la-shapes la-lw"></i><span>dashboard</span></a><a class="list-group-item"
-                                                                             href="patients.html" data-toggle="tooltip" data-placement="bottom" title="Patients"><i
+                                                                             href="patients.html" data-toggle="tooltip"
+                                                                             data-placement="bottom" title="Patients"><i
                 class="las la-user-injured la-lw"></i><span>patients</span></a><a class="list-group-item"
-                                                                                  href="appointments.html" data-toggle="tooltip" data-placement="bottom" title="Specialists"><i
+                                                                                  href="appointments.html"
+                                                                                  data-toggle="tooltip"
+                                                                                  data-placement="bottom"
+                                                                                  title="Specialists"><i
                 class="las la-clinic-medical la-lw"></i><span>appointments</span></a><a class="list-group-item"
-                                                                                        href="notifications.html" data-toggle="tooltip" data-placement="bottom" title="Notifications"><i
+                                                                                        href="medicaments.html"
+                                                                                        data-toggle="tooltip"
+                                                                                        data-placement="bottom"
+                                                                                        title="Notifications"><i
                 class="las la-medkit la-lw"></i><span>medications</span></a><a class="list-group-item"
-                                                                               href="settings.html" data-toggle="tooltip" data-placement="bottom" title="Settings"><i
+                                                                               href="settings.html"
+                                                                               data-toggle="tooltip"
+                                                                               data-placement="bottom" title="Settings"><i
                 class="las la-cogs la-lw"></i><span>settings</span></a>
-            <hr class="divider" />
+            <hr class="divider"/>
 
         </ul>
     </div>
@@ -100,8 +110,13 @@
                                     <label for="frequency">Frequency:</label>
                                     <input type="text" id="frequency" class="form-control" required>
                                 </div>
+                                <div class="form-group">
+                                    <label for="medtime">Intake Times:</label>
+                                    <div id="medtimeContainer"></div>
+                                </div>
                                 <button type="submit" class="btn btn-primary">Prescribe Medication</button>
                             </form>
+
                             <!-- Table to display prescribed medications -->
                             <div class="table-responsive mt-4">
                                 <table class="table table-striped">
@@ -111,6 +126,7 @@
                                         <th>Medication</th>
                                         <th>Dosage</th>
                                         <th>Frequency</th>
+                                        <th>Intake time</th>
                                         <th>Actions</th>
 
                                     </tr>
