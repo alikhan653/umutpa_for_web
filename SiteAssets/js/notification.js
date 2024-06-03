@@ -150,6 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
             newPresRef.set({
                 patientId: patientId,
                 medicationId: medicationId,
+                name: medication.name,
                 description: medication.description, // Save medication description
                 imageUrl: medication.imageUrl, // Save medication imageUrl
                 dosage: dosage,
@@ -199,6 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 prescriptionsRef.set({
                     patientId: updatedPatientId,
                     medicationId: updatedMedicationId,
+                    name:medication.name,
                     description: medication.description, // Save medication description
                     imageUrl: medication.imageUrl,
                     dosage: updatedDosage,
