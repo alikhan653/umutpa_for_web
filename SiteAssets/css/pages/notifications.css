@@ -314,5 +314,22 @@ main .notifications-section .card .card-footer {
     text-align: left;
   }
 }
+.medication-option {
+  display: flex;
+  align-items: center;
+}
+
+.medication-option img {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.medication-image {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
 
 /*# sourceMappingURL=notifications.css.map */
