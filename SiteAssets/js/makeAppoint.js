@@ -33,7 +33,6 @@ auth.onAuthStateChanged(function(user) {
             const appointmentsRef = firebase.database().ref('Users/' + patientId + '/Appointments');
             appointmentsRef.push(newAppointment)
                 .then(function() {
-                    // Reset form after successful submission
                     appointmentForm.reset();
                     alert('New appointment added successfully!');
                     // Redirect to appointments.html

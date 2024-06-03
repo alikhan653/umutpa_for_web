@@ -10,7 +10,6 @@ function login() {
 
         if (user.emailVerified) {
             console.log('Email is verified.');
-            // Retrieve user data from the Realtime Database
             var userId = user.uid;
             var userRef = firebase.database().ref('Users/' + userId);
 

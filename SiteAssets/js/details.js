@@ -7,7 +7,7 @@ auth.onAuthStateChanged(function (user) {
 		const patientId = getUrlParameter('patientId');
 		fetchPatientsData(patientId);
 		fetchUpcomingAppointments(patientId, userId);
-		displayPatientMedications(patientId);
+		displayPatientMedications(patientId, userId);
 
 		var dbRef = firebase.database().ref('Users/' + userId);
 
@@ -84,7 +84,6 @@ function fetchUpcomingAppointments(patientId) {
 		const appointments = snapshot.val();
 		const upcomingAppointmentsDiv = document.getElementById('upcoming-appointments');
 
-		// Clear existing appointments
 		upcomingAppointmentsDiv.innerHTML = `
             <div class="section-title">
                 <button class="btn btn-dark-red-f btn-sm" onclick="location.href='makeAppoint.html'">
@@ -169,22 +168,17 @@ function getDayOfWeek(dateString) {
 	return date.toLocaleString('en-US', { weekday: 'short' });
 }
 function addMinutesToTime(time, minutesToAdd) {
-	// Split the time string into hours and minutes
 	const [hours, minutes] = time.split(':').map(Number);
 
-	// Create a new Date object and set the hours and minutes
 	const date = new Date();
 	date.setHours(hours);
 	date.setMinutes(minutes);
 
-	// Add the specified number of minutes
 	date.setMinutes(date.getMinutes() + minutesToAdd);
 
-	// Get the new hours and minutes
 	const newHours = date.getHours();
 	const newMinutes = date.getMinutes();
 
-	// Format the new hours and minutes back to a time string (e.g., "13:42")
 	const formattedTime = `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`;
 
 	return formattedTime;
@@ -231,9 +225,9 @@ function createMedicationHTML(medication) {
             </div>
             <div class="media-body">
                 <div class="row">
-                    <label class="label-blue-bl">${medication.title}</label>
-                    <p>${medication.description}</p>
-                    <p><i class="las la-clock"></i>${medication.time}</p>
+                    <label class="label-blue-bl">${medication.dosage}</label>
+                    <p>${medication.frequency}</p>
+                    <p><i class="las la-clock"></i>${medication.medtime}</p>
                    
                     <a href=""><i class="las la-ellipsis-v"></i></a>
                 </div>
@@ -243,16 +237,23 @@ function createMedicationHTML(medication) {
     `;
 }
 
-function displayPatientMedications(patientId) {
+function displayPatientMedications(patientId, userId) {
 	try {
-		const medicationsRef = firebase.database().ref('Users/' + patientId + '/Medications');
+		const medicationsRef = firebase.database().ref('Doctors/' + userId + '/Patients/' + patientId + '/Prescriptions');
 
 		medicationsRef.once('value').then((snapshot) => {
 			var medications = snapshot.val();
-
 			if (medications) {
 				const container = document.getElementById("medications");
-
+				const medicationsRef = firebase.database().ref('Medications/' + medications.medicationId);
+				medicationsRef.once('value').then((snapshot) => {
+					const medication = snapshot.val();
+					const medicationHTML = createMedicationHTML(medication);
+					container.insertAdjacentHTML('beforeend', medicationHTML);
+				}).catch((error) => {
+					console.error('Error fetching medications:', error);
+					throw error;
+				});
 				container.innerHTML = `
             		<div class="section-title">
                 		<button onclick="location.href='medicaments.html'" class="btn btn-dark-red-f btn-sm">
@@ -261,6 +262,7 @@ function displayPatientMedications(patientId) {
             		</div>
         		`;
 				Object.keys(medications).forEach(key => {
+					console.log('Key:', key);
 					const medication = medications[key];
 					const medicationHTML = createMedicationHTML(medication);
 					container.insertAdjacentHTML('beforeend', medicationHTML);

@@ -36,38 +36,40 @@
 <body>
 <div class="login-container" id="login-container" style="margin-bottom: 10%">
   <div class="main" id="main">
-    <div class="row" id= "login-div">
-      <h1>Sign In</h1>
-      <input id = "email" type = "text" placeholder = "Email"></input>
-      <input id = "password" type = "password" placeholder = "Password"></input>
-      <button onclick="login()" id = "submit">Submit</button>
-      <p><span>or</span></p>
-      <button onclick="reg_account()" id = "sign-up">Sign Up</button>
-    </div>
+    <div class="row" id="login-div">
+    <h1>Sign In</h1>
+    <form onsubmit="login(); return false;">
+      <input id="email" type="text" placeholder="Email"></input>
+      <input id="password" type="password" placeholder="Password"></input>
+      <button type="submit" id="submit">Submit</button>
+    </form>
+    <!-- <p><span>or</span></p> -->
+    <!-- <button onclick="reg_account()" id="sign-up">Sign Up</button> -->
+  </div>
 
-    <div class="row" id = "registration-div">
-      <h1>Create an Account</h1>
-      <input id = "email-signup" type = "text" placeholder = "Email *"></input>
-      <input id="fname-signup" type="text" placeholder="First Name *"></input>
-      <input id="lname-signup" type="text" placeholder="Last Name *"></input>
-      <input id="number-signup" type="text" placeholder=" Phone Number *"></input>
-      <input id = "position-signup" type = "text" placeholder = "Position *"></input>
-      <input id = "password-signup" type = "password" placeholder = "Password *"></input>
-      <input id = "confirm-password-signup" type = "password" placeholder = "Confirm Password *"></input>
-      <button onclick="registration()" id = "create-acct-btn">Create Account</button>
-      <button onclick="log_account()" id = "return-btn">Return to Login</button>
-    </div>
+<!--    <div class="row" id = "registration-div">-->
+<!--      <h1>Create an Account</h1>-->
+<!--      <input id = "email-signup" type = "text" placeholder = "Email *"></input>-->
+<!--      <input id="fname-signup" type="text" placeholder="First Name *"></input>-->
+<!--      <input id="lname-signup" type="text" placeholder="Last Name *"></input>-->
+<!--      <input id="number-signup" type="text" placeholder=" Phone Number *"></input>-->
+<!--      <input id = "position-signup" type = "text" placeholder = "Position *"></input>-->
+<!--      <input id = "password-signup" type = "password" placeholder = "Password *"></input>-->
+<!--      <input id = "confirm-password-signup" type = "password" placeholder = "Confirm Password *"></input>-->
+<!--      <button onclick="registration()" id = "create-acct-btn">Create Account</button>-->
+<!--      <button onclick="log_account()" id = "return-btn">Return to Login</button>-->
+<!--    </div>-->
 
-    <div class="row" id="send-verification-div">
-      <div class="confirmation-box">
-        <h2>Confirm Email</h2>
-        <div class="user-box">
-          <div id="user_para"></div>
-          <p style="border-bottom: 0px;">To continue, please check your email and verify your account.</p>
-          <button id = "create-acct-btn" onclick="logout()">Logout</button>
-        </div>
-      </div>
-    </div>
+<!--    <div class="row" id="send-verification-div">-->
+<!--      <div class="confirmation-box">-->
+<!--        <h2>Confirm Email</h2>-->
+<!--        <div class="user-box">-->
+<!--          <div id="user_para"></div>-->
+<!--          <p style="border-bottom: 0px;">To continue, please check your email and verify your account.</p>-->
+<!--          <button id = "create-acct-btn" onclick="logout()">Logout</button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </div>
 
