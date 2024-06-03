@@ -63,34 +63,42 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function loadPrescriptions(doctorId) {
-        const prescriptionsRef = firebase.database().ref('Doctors/' + doctorId + '/Prescriptions');
-        prescriptionsRef.once('value').then(async function(snapshot) {
-            const prescriptions = snapshot.val();
-            const prescriptionsList = document.getElementById('prescriptionsList');
-            prescriptionsList.innerHTML = '';
+        const doctorPatientsRef = firebase.database().ref('Doctors/' + doctorId + '/Patients');
+        const prescriptionsList = document.getElementById('prescriptionsList');
+        prescriptionsList.innerHTML = '';
 
-            for (const prescriptionId in prescriptions) {
-                if (prescriptions.hasOwnProperty(prescriptionId)) {
-                    const prescription = prescriptions[prescriptionId];
-                    const patientName = await getPatientName(prescription.patientId);
-                    const medication = await getMedication(prescription.medicationId);
+        doctorPatientsRef.once('value').then(async function(snapshot) {
+            const patients = snapshot.val();
+            for (const patientId in patients) {
+                if (patients.hasOwnProperty(patientId)) {
+                    const patientName = patients[patientId].name;
+                    const prescriptionsRef = firebase.database().ref('Doctors/' + doctorId + '/Patients/' + patientId + '/Prescriptions');
+                    const prescriptionsSnapshot = await prescriptionsRef.once('value');
+                    const prescriptions = prescriptionsSnapshot.val();
 
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${patientName}</td>
-                        <td>
-                            <img src="${medication.imageUrl}" class="medication-image" alt="${medication.name}"> 
-                            ${medication.name}
-                        </td>
-                        <td>${prescription.dosage}</td>
-                        <td>${prescription.frequency}</td>
-                        <td>${Array.isArray(prescription.medtime) ? prescription.medtime.join(', ') : prescription.medtime}</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm" onclick="editPrescription('${prescriptionId}', '${prescription.patientId}', '${prescription.medicationId}', '${prescription.dosage}', '${prescription.frequency}', '${Array.isArray(prescription.medtime) ? prescription.medtime.join(', ') : prescription.medtime}')">Edit</button>
-                            <button class="btn btn-danger btn-sm" onclick="deletePrescription('${prescriptionId}')">Delete</button>
-                        </td>
-                    `;
-                    prescriptionsList.appendChild(row);
+                    for (const prescriptionId in prescriptions) {
+                        if (prescriptions.hasOwnProperty(prescriptionId)) {
+                            const prescription = prescriptions[prescriptionId];
+                            const medication = await getMedication(prescription.medicationId);
+
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${patientName}</td>
+                                <td>
+                                    <img src="${medication.imageUrl}" class="medication-image" alt="${medication.name}"> 
+                                    ${medication.name}
+                                </td>
+                                <td>${prescription.dosage}</td>
+                                <td>${prescription.frequency}</td>
+                                <td>${Array.isArray(prescription.medtime) ? prescription.medtime.join(', ') : prescription.medtime}</td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm" onclick="editPrescription('${prescriptionId}', '${patientId}', '${prescription.medicationId}', '${prescription.dosage}', '${prescription.frequency}', '${Array.isArray(prescription.medtime) ? prescription.medtime.join(', ') : prescription.medtime}')">Edit</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deletePrescription('${prescriptionId}', '${patientId}')">Delete</button>
+                                </td>
+                            `;
+                            prescriptionsList.appendChild(row);
+                        }
+                    }
                 }
             }
         }).catch(function(error) {
@@ -107,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function getMedication(medicationId) {
         const snapshot = await firebase.database().ref('Medications/' + medicationId).once('value');
         const medicationData = snapshot.val();
-        return medicationData ? medicationData : { name: 'Unknown Medication', imageURL: '' };
+        return medicationData ? medicationData : { name: 'Unknown Medication', imageUrl: '' };
     }
 
     function updateMedtimeFields() {
@@ -135,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const medtimeInputs = document.querySelectorAll('#medtimeContainer input');
         const medtime = Array.from(medtimeInputs).map(input => input.value);
 
-        const prescriptionsRef = firebase.database().ref('Doctors/' + auth.currentUser.uid + '/Prescriptions');
+        const prescriptionsRef = firebase.database().ref('Doctors/' + auth.currentUser.uid + '/Patients/' + patientId + '/Prescriptions');
 
         const newPresRef = prescriptionsRef.push();
         newPresRef.set({
@@ -147,6 +155,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then(function() {
             alert('Medication prescribed successfully!');
             loadPrescriptions(auth.currentUser.uid);
+            document.getElementById('doctorPrescriptionForm').reset();
+            document.getElementById('medtimeContainer').innerHTML = '';
         }).catch(function(error) {
             console.error('Error prescribing medication: ', error);
         });
@@ -157,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('medicationSelect').value = medicationId;
         document.getElementById('dosage').value = dosage;
         document.getElementById('frequency').value = frequency;
-        updateMedtimeFields(); // Update medtime fields based on frequency
+        updateMedtimeFields();
 
         const medtimeInputs = document.querySelectorAll('#medtimeContainer input');
         const medtimeArray = medtime.split(', ');
@@ -178,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const updatedMedtimeInputs = document.querySelectorAll('#medtimeContainer input');
             const updatedMedtime = Array.from(updatedMedtimeInputs).map(input => input.value);
 
-            const prescriptionsRef = firebase.database().ref('Doctors/' + auth.currentUser.uid + '/Prescriptions/' + prescriptionId);
+            const prescriptionsRef = firebase.database().ref('Doctors/' + auth.currentUser.uid + '/Patients/' + patientId + '/Prescriptions/' + prescriptionId);
 
             prescriptionsRef.set({
                 patientId: updatedPatientId,
@@ -192,14 +202,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 prescriptionForm.removeEventListener('submit', updatePrescription);
                 prescriptionForm.addEventListener('submit', addPrescription);
                 prescriptionForm.reset();
+                document.getElementById('medtimeContainer').innerHTML = '';
             }).catch(function(error) {
                 console.error('Error updating medication: ', error);
             });
         });
     };
 
-    window.deletePrescription = function(prescriptionId) {
-        const prescriptionsRef = firebase.database().ref('Doctors/' + auth.currentUser.uid + '/Prescriptions/' + prescriptionId);
+    window.deletePrescription = function(prescriptionId, patientId) {
+        const prescriptionsRef = firebase.database().ref('Doctors/' + auth.currentUser.uid + '/Patients/' + patientId + '/Prescriptions/' + prescriptionId);
         prescriptionsRef.remove().then(function() {
             alert('Medication deleted successfully!');
             loadPrescriptions(auth.currentUser.uid);
