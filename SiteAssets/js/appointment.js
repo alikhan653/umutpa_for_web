@@ -87,7 +87,7 @@ function createAppointmentTableRow(appointment) {
         <td>${appointment.place}</td>
         <td>${appointment.description}</td>
         <td><a class="view-more btn btn-sm btn-dark-f" href="details.html?patientId=${appointment.patientId}">view profile</a></td>
-        <button class="delete-appointment btn btn-sm btn-danger" data-appointment-id="${appointment.id}" data-patient-id="${appointment.patientId}">Delete Appointment</button>
+        <button class="delete-appointment btn btn-sm btn-secondary" data-appointment-id="${appointment.id}" data-patient-id="${appointment.patientId}">Delete Appointment</button>
     `;
 
     return appointmentRow;

@@ -6,7 +6,7 @@ body {
 /* Navbar */
 .sidebar {
   height: 100vh;
-  background-color: #007bff !important;
+  background-color: #00AA81 !important;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -18,7 +18,7 @@ border-bottom: 1px groove #eee;
 }
 
 .sidebar-link:hover {
-background-color: #007bff !important;
+background-color: #00AA81 !important;
 ;
 border-radius: 5px;
 }

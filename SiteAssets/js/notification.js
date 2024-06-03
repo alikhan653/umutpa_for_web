@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     option.value = medicationId;
                     option.innerHTML = `
                         <div class="medication-option">
-                            <img src="${medication.imageUrl}" alt="${medication.name}">
                             ${medication.name}
                         </div>
                     `;
@@ -92,8 +91,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <td>${prescription.frequency}</td>
                                 <td>${Array.isArray(prescription.medtime) ? prescription.medtime.join(', ') : prescription.medtime}</td>
                                 <td>
-                                    <button class="btn btn-warning btn-sm" onclick="editPrescription('${prescriptionId}', '${patientId}', '${prescription.medicationId}', '${prescription.dosage}', '${prescription.frequency}', '${Array.isArray(prescription.medtime) ? prescription.medtime.join(', ') : prescription.medtime}')">Edit</button>
-                                    <button class="btn btn-danger btn-sm" onclick="deletePrescription('${prescriptionId}', '${patientId}')">Delete</button>
+                                    <button class="btn btn-info btn-sm" onclick="editPrescription('${prescriptionId}', '${patientId}', '${prescription.medicationId}', '${prescription.dosage}', '${prescription.frequency}', '${Array.isArray(prescription.medtime) ? prescription.medtime.join(', ') : prescription.medtime}')">Edit</button>
+                                    <button class="btn btn-secondary btn-sm" onclick="deletePrescription('${prescriptionId}', '${patientId}')">Delete</button>
                                 </td>
                             `;
                             prescriptionsList.appendChild(row);
@@ -115,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function getMedication(medicationId) {
         const snapshot = await firebase.database().ref('Medications/' + medicationId).once('value');
         const medicationData = snapshot.val();
-        return medicationData ? medicationData : { name: 'Unknown Medication', imageUrl: '' };
+        return medicationData ? medicationData : { name: 'Unknown Medication', description: '', imageUrl: '' };
     }
 
     function updateMedtimeFields() {
@@ -143,22 +142,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const medtimeInputs = document.querySelectorAll('#medtimeContainer input');
         const medtime = Array.from(medtimeInputs).map(input => input.value);
 
-        const prescriptionsRef = firebase.database().ref('Doctors/' + auth.currentUser.uid + '/Patients/' + patientId + '/Prescriptions');
+        // Fetch medication details to include description and imageUrl
+        getMedication(medicationId).then(medication => {
+            const prescriptionsRef = firebase.database().ref('Doctors/' + auth.currentUser.uid + '/Patients/' + patientId + '/Prescriptions');
 
-        const newPresRef = prescriptionsRef.push();
-        newPresRef.set({
-            patientId: patientId,
-            medicationId: medicationId,
-            dosage: dosage,
-            frequency: frequency,
-            medtime: medtime,
-        }).then(function() {
-            alert('Medication prescribed successfully!');
-            loadPrescriptions(auth.currentUser.uid);
-            document.getElementById('doctorPrescriptionForm').reset();
-            document.getElementById('medtimeContainer').innerHTML = '';
-        }).catch(function(error) {
-            console.error('Error prescribing medication: ', error);
+            const newPresRef = prescriptionsRef.push();
+            newPresRef.set({
+                patientId: patientId,
+                medicationId: medicationId,
+                description: medication.description, // Save medication description
+                imageUrl: medication.imageUrl, // Save medication imageUrl
+                dosage: dosage,
+                frequency: frequency,
+                medtime: medtime,
+            }).then(function() {
+                alert('Medication prescribed successfully!');
+                loadPrescriptions(auth.currentUser.uid);
+                document.getElementById('doctorPrescriptionForm').reset();
+                document.getElementById('medtimeContainer').innerHTML = '';
+            }).catch(function(error) {
+                console.error('Error prescribing medication: ', error);
+            });
         });
     }
 
@@ -188,26 +192,32 @@ document.addEventListener('DOMContentLoaded', function() {
             const updatedMedtimeInputs = document.querySelectorAll('#medtimeContainer input');
             const updatedMedtime = Array.from(updatedMedtimeInputs).map(input => input.value);
 
-            const prescriptionsRef = firebase.database().ref('Doctors/' + auth.currentUser.uid + '/Patients/' + patientId + '/Prescriptions/' + prescriptionId);
+            // Fetch medication details to include description
+            getMedication(updatedMedicationId).then(medication => {
+                const prescriptionsRef = firebase.database().ref('Doctors/' + auth.currentUser.uid + '/Patients/' + patientId + '/Prescriptions/' + prescriptionId);
 
-            prescriptionsRef.set({
-                patientId: updatedPatientId,
-                medicationId: updatedMedicationId,
-                dosage: updatedDosage,
-                frequency: updatedFrequency,
-                medtime: updatedMedtime,
-            }).then(function() {
-                alert('Medication updated successfully!');
-                loadPrescriptions(auth.currentUser.uid);
-                prescriptionForm.removeEventListener('submit', updatePrescription);
-                prescriptionForm.addEventListener('submit', addPrescription);
-                prescriptionForm.reset();
-                document.getElementById('medtimeContainer').innerHTML = '';
-            }).catch(function(error) {
-                console.error('Error updating medication: ', error);
+                prescriptionsRef.set({
+                    patientId: updatedPatientId,
+                    medicationId: updatedMedicationId,
+                    description: medication.description, // Save medication description
+                    imageUrl: medication.imageUrl,
+                    dosage: updatedDosage,
+                    frequency: updatedFrequency,
+                    medtime: updatedMedtime,
+                }).then(function() {
+                    alert('Medication updated successfully!');
+                    loadPrescriptions(auth.currentUser.uid);
+                    prescriptionForm.removeEventListener('submit', updatePrescription);
+                    prescriptionForm.addEventListener('submit', addPrescription);
+                    prescriptionForm.reset();
+                    document.getElementById('medtimeContainer').innerHTML = '';
+                }).catch(function(error) {
+                    console.error('Error updating medication: ', error);
+                });
             });
         });
     };
+
 
     window.deletePrescription = function(prescriptionId, patientId) {
         const prescriptionsRef = firebase.database().ref('Doctors/' + auth.currentUser.uid + '/Patients/' + patientId + '/Prescriptions/' + prescriptionId);

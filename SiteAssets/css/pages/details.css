@@ -210,25 +210,25 @@ label {
 }
 
 .btn-dark-red-f-gr {
-  background: linear-gradient(90deg, #0c66b9, #0c66b9);
+  background: linear-gradient(90deg, #00AA81, #00AA81);
   color: white;
   border: 1.5px solid transparent;
 }
 .btn-dark-red-f-gr:hover, .btn-dark-red-f-gr:focus {
   background: none;
-  border-color: #0c66b9;
-  color: #0c66b9;
+  border-color: #00AA81;
+  color: #00AA81;
 }
 
 .btn-dark-red-f {
-  background-color: #0c66b9;
+  background-color: #00AA81;
   color: white;
   border: 1.5px solid transparent;
 }
 .btn-dark-red-f:hover, .btn-dark-red-f:focus {
   background: none;
-  border: 1.5px solid #0c66b9;
-  color: #0c66b9;
+  border: 1.5px solid #00AA81;
+  color: #00AA81;
 }
 
 .btn-dark-red-o {
@@ -243,22 +243,22 @@ label {
 }
 
 .btn-dark-blue-f {
-  background-color: #00417c;
+  background-color: #00AA81;
   color: white;
 }
 .btn-dark-blue-f:hover, .btn-dark-blue-f:focus {
   background-color: transparent;
-  border: 1.5px solid #00417c;
-  color: #00417c;
+  border: 1.5px solid #00AA81;
+  color: #00AA81;
 }
 
 .btn-dark-blue-o {
   background-color: transparent;
-  color: #00417c;
-  border: 1.5px solid #00417c;
+  color: #00AA81;
+  border: 1.5px solid #00AA81;
 }
 .btn-dark-blue-o:hover, .btn-dark-blue-o:focus {
-  background-color: #00417c;
+  background-color: #00AA81;
   border: 1.5px solid transparent;
   color: white;
 }
@@ -375,8 +375,8 @@ label {
 }
 .patient-details-section .nav li .active, .patient-details-section .nav .nav-item .active, .patient-details-section .nav-tabs li .active, .patient-details-section .nav-tabs .nav-item .active {
   background-color: white;
-  color: #0c66b9;
-  border-bottom: 2px solid #0c66b9;
+  color: #00AA81;
+  border-bottom: 2px solid #00AA81;
 }
 .patient-details-section .tab-content {
   background-color: #f9f9f9;
