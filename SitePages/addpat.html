@@ -4,18 +4,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="../../../../Downloads/umutpa_for_web-master/SiteAssets/css/vendors/bootstrap.min.css" />
-  <link rel="stylesheet" href="../../../../Downloads/umutpa_for_web-master/SiteAssets/css/vendors/line-awesome.min.css" />
-  <link rel="stylesheet" href="../../../../Downloads/umutpa_for_web-master/SiteAssets/css/pages/layout.css" />
+  <link rel="stylesheet" href="../SiteAssets/css/vendors/bootstrap.min.css" />
+  <link rel="stylesheet" href="../SiteAssets/css/vendors/line-awesome.min.css" />
+  <link rel="stylesheet" href="../SiteAssets/css/pages/layout.css" />
   <link rel="stylesheet" href="../SiteAssets/css/pages/admin.css">
-  <script src="../../../../Downloads/umutpa_for_web-master/SiteAssets/js/vendors/jquery.min.js"></script>
-  <script src="../../../../Downloads/umutpa_for_web-master/SiteAssets/js/vendors/bootstrap.bundle.min.js"></script>
+  <script src="../SiteAssets/js/vendors/jquery.min.js"></script>
+  <script src="../SiteAssets/js/vendors/bootstrap.bundle.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
   <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
   <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
-  <script type="text/javascript" src="../../../../Downloads/umutpa_for_web-master/SiteAssets/js/firebaseconf.js"></script>
+  <script type="text/javascript" src="../SiteAssets/js/firebaseconf.js"></script>
   <script type="text/javascript" src="../SiteAssets/js/userData.js"></script>
-  <script type="text/javascript" src="../../../../Downloads/umutpa_for_web-master/SiteAssets/js/admin.js"></script>
+  <script type="text/javascript" src="../SiteAssets/js/admin.js"></script>
   <title>Admin</title>
 </head>
 
@@ -30,12 +30,12 @@
           </li>
           <li class="nav-item"><a class="nav-link profile-dropdown" href="#" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false"><img class="rounded-circle" id="personImage"
-                src="../../../../Downloads/umutpa_for_web-master/SiteAssets/images/person.jpg" /><span class="d" id="usernamePlaceholder"></span></a>
+                src="../SiteAssets/images/person.jpg" /><span class="d" id="usernamePlaceholder"></span></a>
             <div class="dropdown">
               <div class="dropdown-menu shadow-lg profile-dropdown-menu" aria-labelledby="profile-dropdown">
-                <a class="dropdown-item" href="../../../../Downloads/umutpa_for_web-master/SitePages/settings.html">
+                <a class="dropdown-item" href="../SitePages/settings.html">
                   <i class="las la-cog mr-2"></i>settings</a>
-                <a class="dropdown-item" onclick="logout()" href="../../../../Downloads/umutpa_for_web-master/SitePages/login.html">
+                <a class="dropdown-item" onclick="logout()" href="../SitePages/login.html">
                   <i class="las la-door-closed mr-2"></i>Logout</a>
               </div>
             </div>
@@ -83,11 +83,11 @@
                       <input type="file" id="profilePicture" class="form-control-file" accept="image/*">
                     </div>
                     <div class="form-group">
-                      <label for="patientName">First name:</label>
+                      <label for="firstName">First name:</label>
                       <input type="text" id="firstName" class="form-control" placeholder="Enter patient name" required>
                     </div>
                     <div class="form-group">
-                      <label for="patientName">Last name:</label>
+                      <label for="lastName">Last name:</label>
                       <input type="text" id="lastName" class="form-control" placeholder="Enter patient name" required>
                     </div>
                     <div class="form-group">
@@ -102,6 +102,10 @@
                       <label for="patientEmail">Email:</label>
                       <input type="email" id="patientEmail" class="form-control" placeholder="Enter patient email"
                         required>
+                    </div>
+                    <div class="form-group">
+                      <label for="patientPassword">Password:</label>
+                      <input type="password" id="patientPassword" class="form-control" placeholder="Password" required>
                     </div>
                     <div class="form-group">
                       <label for="patientStage">Stage:</label>
