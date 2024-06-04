@@ -15,38 +15,46 @@
 
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg shadow-sm fixed-top">
-        <a class="navbar-brand" href=""><span>Umytpa</span></a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="las la-question-circle"></i></a>
-                </li>
+    <nav class="navbar navbar-expand-lg shadow-sm fixed-top"><a class="navbar-brand" href=""><span>Umytpa</span></a>
+        <div class="navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link"><i class="las la-question-circle"></i></a></li>
+                <li class="nav-item dropdown dropleft"><a class="nav-link notification-dropdown" href="#"
+                                                          role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span
+                        class="badge badge-pill badge-primary"
+                        style="float:right;margin-bottom:-10px;"></span><i class="las la-bell"></i></a>
+                    <div class="dropdown-menu notification-dropdown-menu shadow-lg"
+                         aria-labelledby="notification-dropdown">
+                        <div class="dropdown-title"><a href="">notifications<span
+                                class="ml-2 notifications-count">(3)</span></a><a class="float-right"
+                                                                                  href="">mark all as read</a></div>
+                        <div class="dropdown-footer text-center"><a href="notifications.html">view more</a></div>
+                    </div>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="languageDropdown" role="button" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        <i class="las la-globe"></i> Language
+                    <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="las la-globe"></i> <span data-translate="language">Language</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="languageDropdown">
-                        <a class="dropdown-item" href="dashboard.html" data-lang="en">English</a>
-                        <a class="dropdown-item" href="dashboard.html" data-lang="ru">Русский</a>
-                        <a class="dropdown-item" href="dashboard.html" data-lang="kz">Қазақша</a>
+                        <a class="dropdown-item" data-lang="en">English</a>
+                        <a class="dropdown-item" data-lang="ru">Русский</a>
+                        <a class="dropdown-item" data-lang="kz">Қазақша</a>
                     </div>
+                </li>
                 </li>
                 <li class="nav-item">
                     <div class="nav-link"><span class="vertical-divider"></span></div>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link profile-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">
-                        <img class="rounded-circle" id="personImage" src="../SiteAssets/images/person.jpg"/>
-                        <span class="d" id="usernamePlaceholder"></span>
-                    </a>
-                    <div class="dropdown-menu shadow-lg profile-dropdown-menu" aria-labelledby="profile-dropdown">
-                        <a class="dropdown-item" href="settings.html">
-                            <i class="las la-cog mr-2"></i>settings</a>
-                        <a class="dropdown-item" onclick="logout()" href="login.html">
-                            <i class="las la-door-closed mr-2"></i>Logout</a>
+                <li class="nav-item"><a class="nav-link profile-dropdown" href="#" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
+                        class="rounded-circle" id="personImage" src="../SiteAssets/images/person.jpg" /><span class="d" id="usernamePlaceholder"></span></a>
+                    <div class="dropdown">
+                        <div class="dropdown-menu shadow-lg profile-dropdown-menu"
+                             aria-labelledby="profile-dropdown">
+                            <a class="dropdown-item" href="settings.html">
+                                <i class="las la-cog mr-2"></i>settings</a>
+                            <a class="dropdown-item" onclick="logout()" href="login.html">
+                                <i class="las la-door-closed mr-2"></i>Logout</a>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -56,23 +64,13 @@
 <main>
     <div class="side-nav">
         <ul class="list-group list-group-flush">
-            <a class="list-group-item" href="dashboard.html"
-               data-toggle="tooltip" data-placement="bottom" title="Dashboard"><i
-                    class="las la-shapes la-lw"></i><span>dashboard</span></a>
-            <a class="list-group-item"
-               href="patients.html" data-toggle="tooltip" data-placement="bottom" title="Patients"><i
-                    class="las la-user-injured la-lw"></i><span>patients</span></a>
-            <a class="list-group-item"
-               href="appointments.html" data-toggle="tooltip" data-placement="bottom" title="Specialists"><i
-                    class="las la-clinic-medical la-lw"></i><span>appointments</span></a>
-            <a class="list-group-item"
-               href="medicaments.html" data-toggle="tooltip" data-placement="bottom" title="medicaments"><i
-                    class="las la-medkit la-lw"></i><span>medications</span></a>
-            <a class="list-group-item"
-               href="settings.html" data-toggle="tooltip" data-placement="bottom" title="Settings"><i
-                    class="las la-cogs la-lw"></i><span>settings</span></a>
+            <a class="list-group-item" href="dashboard.html" data-toggle="tooltip" data-placement="bottom" title="Dashboard"><i class="las la-shapes la-lw"></i><span data-translate="dashboard">dashboard</span></a>
+            <a class="list-group-item" href="patients.html" data-toggle="tooltip" data-placement="bottom" title="Patients"><i class="las la-user-injured la-lw"></i><span data-translate="patients">patients</span></a>
+            <a class="list-group-item" href="appointments.html" data-toggle="tooltip" data-placement="bottom" title="Specialists"><i class="las la-clinic-medical la-lw"></i><span data-translate="appointments">appointments</span></a>
+            <a class="list-group-item" href="medicaments.html" data-toggle="tooltip" data-placement="bottom" title="medicaments"><i class="las la-medkit la-lw"></i><span data-translate="medications">medications</span></a>
+            <a class="list-group-item" href="settings.html" data-toggle="tooltip" data-placement="bottom" title="Settings"><i class="las la-cogs la-lw"></i><span data-translate="settings">settings</span></a>
 
-            <hr class="divider"/>
+            <hr class="divider" />
 
         </ul>
     </div>
@@ -81,7 +79,7 @@
             <div class="section">
                 <div class="row">
                     <div class="col-md-6">
-                        <h5 class="page-title"></h5>
+                        <h5 data-translate="dashboard"></h5>
                     </div>
                 </div>
             </div>
@@ -92,21 +90,19 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6 welcome-text-wrapper align-self-center">
-                                        <h3>Hello, Dr. <span id="div-name"></span></h3>
+                                        <h3 data-translate="hello"><span id="div-name"></span></h3>
                                         <h5><span id="div-position"></span></h5>
                                         <p data-translate="welcome"></p>
                                     </div>
-                                    <div class="col-md-6 welcome-img-wrapper"><img
-                                            src="../SiteAssets/images/hello.svg"/></div>
+                                    <div class="col-md-6 welcome-img-wrapper"><img src="../SiteAssets/images/hello.svg" /></div>
                                 </div>
                             </div>
                         </div>
                         <div class="card app-stats-card">
                             <div class="card-body">
                                 <div class="row text-center">
-                                    <div class="col-md-4"><i
-                                            class="las la-user-injured la-3x align-self-center"></i>
-                                        <p>total patients</p>
+                                    <div class="col-md-4"><i class="las la-user-injured la-3x align-self-center"></i>
+                                        <p data-translate="totalPatients">total patients</p>
                                         <h4><a href="" id="patientCount"></a></h4>
                                     </div>
                                 </div>
@@ -117,28 +113,32 @@
             </div>
             <div class="section functionality-section">
                 <div class="section-content">
-                    <div class="card-deck"><a class="card text-center" href="appointments.html">
-                        <div class="card-title">
-                            <div class="icon-wrapper"><i class="las la-user-md"></i></div>
-                        </div>
-                        <div class="card-body">
-                            <p>make an appointment</p>
-                        </div>
-                    </a><a class="card text-center" href="patients.html">
-                        <div class="card-title">
-                            <div class="icon-wrapper"><i class="las la-user-plus"></i></div>
-                        </div>
-                        <div class="card-body">
-                            <p>add a user</p>
-                        </div>
-                    </a><a class="card text-center" href="medicaments.html">
-                        <div class="card-title">
-                            <div class="icon-wrapper"><i class="las la-plus-circle"></i></div>
-                        </div>
-                        <div class="card-body">
-                            <p>add a medicines</p>
-                        </div>
-                    </a></div>
+                    <div class="card-deck">
+                        <a class="card text-center" href="appointments.html">
+                            <div class="card-title">
+                                <div class="icon-wrapper"><i class="las la-user-md"></i></div>
+                            </div>
+                            <div class="card-body">
+                                <p data-translate="makeAppointment">make an appointment</p>
+                            </div>
+                        </a>
+                        <a class="card text-center" href="patients.html">
+                            <div class="card-title">
+                                <div class="icon-wrapper"><i class="las la-user-plus"></i></div>
+                            </div>
+                            <div class="card-body">
+                                <p data-translate="addUser">add a user</p>
+                            </div>
+                        </a>
+                        <a class="card text-center" href="medicaments.html">
+                            <div class="card-title">
+                                <div class="icon-wrapper"><i class="las la-plus-circle"></i></div>
+                            </div>
+                            <div class="card-body">
+                                <p data-translate="addMedicines">add a medicines</p>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="section card-summaries">
@@ -146,7 +146,7 @@
                     <div class="card-deck">
                         <div class="card">
                             <div class="card-header">
-                                <h5>Patients lists</h5>
+                                <h5 data-translate="patientsList">Patients lists</h5>
                             </div>
                             <div class="card-body">
                                 <table class="table table-borderless table-hover table-responsive-md">
@@ -155,12 +155,11 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="card-footer"><a class="view-more" href="patients.html">more<i
-                                    class="las la-angle-right"></i></a></div>
+                            <div class="card-footer"><a class="view-more" href="patients.html" data-translate="more">more<i class="las la-angle-right"></i></a></div>
                         </div>
                         <div class="card">
                             <div class="card-header">
-                                <h5>upcoming appointments</h5>
+                                <h5 data-translate="upcomingAppointments">upcoming appointments</h
                             </div>
                             <div class="card-body">
                                 <table class="table table-borderless table-hover table-responsive-md">
@@ -169,8 +168,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="card-footer"><a class="view-more" href="appointments.html">more<i
-                                    class="las la-angle-right"></i></a></div>
+                            <div class="card-footer"><a class="view-more" href="appointments.html" data-translate="more">more<i class="las la-angle-right"></i></a></div>
                         </div>
                     </div>
                 </div>
@@ -180,17 +178,6 @@
     </div>
 </main>
 
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-</script>
-<!-- Bootstrap -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js"
-        integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous">
-</script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
-</script>
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
 
