@@ -10,7 +10,22 @@ function login() {
 
         if (user.emailVerified) {
             console.log('Email is verified.');
-            window.location.href = "dashboard.html";
+            var userId = user.uid;
+            var userRef = firebase.database().ref('Users/' + userId);
+
+            userRef.once('value').then((snapshot) => {
+                var userData = snapshot.val();
+                console.log('User Data:', userData);
+
+                if (userData.role === 'Admin') {
+                    window.location.href = "addPat.html";
+                } else {
+                    window.location.href = "dashboard.html";
+                }
+            }).catch((error) => {
+                console.error('Error fetching user data:', error);
+                errorNotification('Failed to retrieve user data. Please try again.');
+            });
         } else {
             console.log('Email is not verified.');
             errorNotification('Email is not verified. Please verify your email address.');

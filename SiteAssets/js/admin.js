@@ -34,48 +34,48 @@ $(() => {
         const phone = $('#patientPhone').val();
         const city = $('#patientCity').val();
         const address = $('#patientAddress').val();
+        const password = $('#patientPassword').val(); // Получение пароля от администратора
 
-        const newPatient = {
-            name: `${firstName} ${lastName}`,
-            birth: birth,
-            age: age,
-            stage: stage,
-            email: email,
-            phone: phone,
-            role: 'patient',
-            city: city,
-            address: address,
-            imageUrl: ''
-        };
+        // Проверка ввода пароля
+        if (!password) {
+            alert('Please enter a password for the patient.');
+            return;
+        }
 
-        const patientsRef = firebase.database().ref('Users');
-        const newPatientRef = patientsRef.push();
-        newPatientRef.set(newPatient)
-            .then(function () {
-                const file = $('#profilePicture')[0].files[0];
-                if (file) {
-                    const storageRef = firebase.storage().ref('profile_pictures/' + newPatientRef.key + '/' + file.name);
-                    storageRef.put(file).then(function (snapshot) {
-                        snapshot.ref.getDownloadURL().then(function (downloadURL) {
-                            newPatientRef.update({ imageUrl: downloadURL })
-                                .then(function () {
-                                    $('#patientForm')[0].reset();
-                                    alert('New patient added successfully!');
-                                    loadPatients(); // Refresh the patient list
-                                });
-                        });
-                    }).catch(function (error) {
-                        alert('Error uploading profile picture: ' + error.message);
+        // Создание учетной записи пользователя в auth
+        auth.createUserWithEmailAndPassword(email, password)
+            .then(function (userCredential) {
+                const user = userCredential.user;
+                const userId = user.uid;
+
+                const newPatient = {
+                    name: `${firstName} ${lastName}`,
+                    birth: birth,
+                    age: age,
+                    stage: stage,
+                    email: email,
+                    phone: phone,
+                    role: 'patient',
+                    city: city,
+                    address: address,
+                    imageUrl: '',
+                };
+
+                const patientsRef = firebase.database().ref('Users');
+                patientsRef.child(userId).set(newPatient)
+                    .then(function () {
+                        $('#patientForm')[0].reset();
+                        alert('New patient added successfully!');
+                        loadPatients(); // Обновление списка пациентов
+                    })
+                    .catch(function (error) {
+                        console.error('Error adding new patient: ', error);
+                        alert('Error adding new patient. Please try again.');
                     });
-                } else {
-                    $('#patientForm')[0].reset();
-                    alert('New patient added successfully!');
-                    loadPatients(); // Refresh the patient list
-                }
             })
             .catch(function (error) {
-                console.error('Error adding new patient: ', error);
-                alert('Error adding new patient. Please try again.');
+                console.error('Error creating user: ', error);
+                alert('Error creating user. Please try again.');
             });
     });
 

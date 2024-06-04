@@ -8,14 +8,14 @@
 }
 
 body {
-    background-color: #0c66b9;
+    background-color: #00AA81;
 }
 
 h1 {
     margin-bottom: 8%;
     text-align: center;
     font-family: "Fredoka One", cursive;
-    color: #0c66b9;
+    color: #00AA81;
     letter-spacing: 0.1em;
 }
 
@@ -59,7 +59,7 @@ input, button {
 }
 
 #submit, #create-acct-btn {
-    background-color: #0c66b9;
+    background-color: #00AA81;
     color: white;
     border: none;
     margin-top: 5%;

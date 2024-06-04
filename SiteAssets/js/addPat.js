@@ -64,7 +64,12 @@ function addPatientToDoctor(user, patientId) {
     firebase.database().ref('Users/' + patientId).once('value').then(function(snapshot) {
         const patientData = snapshot.val();
         if (patientData) {
-            doctorPatientsRef.child(patientId).set(patientData)
+            const updatedPatientData = { ...patientData, doctorId: user.uid };
+
+            doctorPatientsRef.child(patientId).set(updatedPatientData)
+                .then(function() {
+                    return firebase.database().ref('Users/' + patientId).update({ doctorId: user.uid });
+                })
                 .then(function() {
                     alert('Patient added to your list successfully!');
                     delete allPatients[patientId]; // Удаляем пациента из общего списка
