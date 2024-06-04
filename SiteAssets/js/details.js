@@ -6,7 +6,6 @@ auth.onAuthStateChanged(function (user) {
 		var userId = user.uid;
 		const patientId = getUrlParameter('patientId');
 		fetchPatientsData(patientId);
-		fetchUpcomingAppointments(patientId, userId);
 		displayPatientMedications(patientId, userId);
 
 		var dbRef = firebase.database().ref('Users/' + userId);
@@ -14,6 +13,10 @@ auth.onAuthStateChanged(function (user) {
 		dbRef.once('value').then((snapshot) => {
 			if (snapshot.exists()) {
 				var userData = snapshot.val();
+				var doctorName = userData.first_name;
+				fetchUpcomingAppointments(patientId, userId, doctorName);
+				document.getElementById("namePlaceholder").innerHTML =  doctorName;
+
 				document.getElementById("usernamePlaceholder").innerHTML = email_id;
 			} else {
 				console.log("No data available for the specified user ID");
@@ -50,7 +53,7 @@ function fetchPatientsData(patientId) {
 		if (patient) {
 			// Update the HTML with the patient data
 			console.log(patient.dob)
-			document.querySelector('.mini-card .card-header img').src = patient.imageUrl || 'https://placebeard.it/640x360';
+			document.querySelector('.mini-card .card-header img').src = patient.imageUrl || '';
 			document.querySelector('.mini-card .card-body h4').textContent = patient.name || 'N/A';
 			document.querySelector('.breadcrumb-item.active ').textContent = patient.name || 'N/A';
 			document.querySelector('.mini-card .card-body small').textContent = patient.email || 'N/A';
@@ -77,7 +80,7 @@ function getUrlParameter(name) {
 	return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
-function fetchUpcomingAppointments(patientId) {
+function fetchUpcomingAppointments(patientId, userId, doctorName) {
 	const appointmentsRef = firebase.database().ref('Users/' + patientId + '/Appointments');
 
 	appointmentsRef.once('value').then((snapshot) => {
@@ -95,7 +98,7 @@ function fetchUpcomingAppointments(patientId) {
 		if (appointments) {
 			Object.keys(appointments).forEach(key => {
 				const appointment = appointments[key];
-				const appointmentHTML = createAppointmentHTML(appointment);
+				const appointmentHTML = createAppointmentHTML(appointment, doctorName);
 				upcomingAppointmentsDiv.insertAdjacentHTML('beforeend', appointmentHTML);
 			});
 		} else {
@@ -108,22 +111,19 @@ function fetchUpcomingAppointments(patientId) {
 function getDoctorName(doctorId) {
 	console.log('Doctor ID:', doctorId);
 	const doctorDataRef = firebase.database().ref('Users/' + doctorId);
+	console.log('Doctor Data Ref:', doctorDataRef);
 	doctorDataRef.once('value').then((snapshot) => {
 		const doctorData = snapshot.val();
-		console.log('Doctor Data: ', doctorData.first_name);
+		console.log('Doctor Data:', doctorData.first_name);
 		return doctorData.first_name;
 	}).catch((error) => {
 		console.error('Error fetching doctor data:', error);
 		throw error;
 	});
 }
-function createAppointmentHTML(appointment) {
+function createAppointmentHTML(appointment, doctorName) {
 	const user = firebase.auth().currentUser;
-
-	const doctorDataRef = firebase.database().ref('Users/' + appointment.doctorId);
-
-	// Generate the HTML with a placeholder for the doctor name
-	const appointmentHTML = `
+	return `
         <div class="media">
             <div class="align-self-center mr-3">
                 <p>${getDayOfWeek(appointment.date)}</p>
@@ -133,7 +133,7 @@ function createAppointmentHTML(appointment) {
             <div class="media-body">
                 <div class="row">
                     <label class="label-green-bl">${appointment.description}</label>
-                    <p>with Dr. <span id="doctor-name-${appointment.doctorId}">Loading...</span></p>
+                    <p>with Dr. ${doctorName}</p>
                     <p><i class="las la-tv"></i>on ${appointment.place}</p>
                     <p><i class="las la-clock"></i>${appointment.time} - ${addMinutesToTime(appointment.time, 30)}</p>
                     <label class="label-cream label-sm">
@@ -144,23 +144,6 @@ function createAppointmentHTML(appointment) {
             </div>
         </div>
     `;
-
-	document.getElementById('upcoming-appointments').innerHTML += appointmentHTML;
-
-	// Fetch the doctor data and update the doctor name span
-	doctorDataRef.once('value').then((snapshot) => {
-		const doctorData = snapshot.val();
-		const doctorNameSpan = document.getElementById(`doctor-name-${appointment.doctorId}`);
-		if (doctorNameSpan) {
-			doctorNameSpan.textContent = doctorData.first_name;
-		}
-	}).catch((error) => {
-		console.error('Error fetching doctor data:', error);
-		const doctorNameSpan = document.getElementById(`doctor-name-${appointment.doctorId}`);
-		if (doctorNameSpan) {
-			doctorNameSpan.textContent = 'Unknown';
-		}
-	});
 }
 
 function getDayOfWeek(dateString) {
@@ -197,7 +180,7 @@ function getDuration(timeString) {
 	const times = timeString.split(' - ');
 	const startTime = new Date(`1970-01-01T${times[0]}:00`);
 	const endTime = new Date(`1970-01-01T${times[1]}:00`);
-	const duration = (endTime - startTime) / (1000 * 60); // Convert milliseconds to minutes
+	const duration = (endTime - startTime) / (1000 * 60);
 	return duration;
 }
 
