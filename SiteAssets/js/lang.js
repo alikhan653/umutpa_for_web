@@ -48,11 +48,12 @@ const translations = {
         patientsList: "Списки пациентов",
         upcomingAppointments: "предстоящие назначения",
         totalPatients: "всего пациентов",
-        more: "больше"
+        more: "больше",
+        hello: "Привет, Доктор "
     },
     kz: {
         welcome: "Біздің веб-сайтымызға қош келдіңіз",
-        hello: "Сәлем",
+        hello: "Сәлеметсіз бе, Дәрігер ",
         about: "Біз туралы",
         contact: "Байланыс",
         phone: "Телефон",

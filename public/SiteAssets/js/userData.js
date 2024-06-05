@@ -18,7 +18,6 @@ auth.onAuthStateChanged(function (user) {
                 if(document.getElementById("personImage"))
                     document.getElementById("personImage").src = userImg;
                 if(document.getElementById("div-name")){
-                    console.log('div-name' + userName)
                     document.getElementById("div-name").innerText = userName;
                 }
                 if(document.getElementById("doctor-name")){

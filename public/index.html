@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Firebase Demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+    <script src="../SiteAssets/js/firebaseconf.js"></script>
+  </head>
+  <body>
+    <div class="container">
+        <h1>Firebase Demo</h1>
+        <form>
+            <div id="message"></div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password" required>
+            </div>
+            <button id="signin" class="btn btn-primary" type="button">Signin</button>
+            <button id="register" class="btn btn-primary" type="button">Register</button>
+            <button id="gsignin" class="btn btn-primary" type="button">Signin With Google</button>
+            <button id="signout" class="btn btn-primary" type="button">Signout</button>
+        </form>
+        <br />
+        <form>
+            <p>
+                <ol id="messagelist"></ol>
+            </p>
+            <div class="form-group">
+                <label for="content">Enter Message</label>
+                <input type="text" class="form-control" id="content" placeholder="Add Message" required>
+            </div>
+            <button id="sendmsg" class="btn btn-primary" type="button">SendMsg</button>
+        </form>
+    </div>
+    
+
+    <script>
+        $(document).ready(function() {
+            console.log('Page is ready !');
+            var app = {};
+            
+            //Register
+            $("#register").click(function(e) {
+                $("#message").text("");
+                $("#message").addClass("");
+
+                var email = $("#email").val();
+                var password = $("#password").val();
+                
+                if (!email || !password) {
+                    return console.log('email and password is required');
+                }
+
+                //Register
+                firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then(function(result) {
+                    $("#message").text("Successfully registered");
+                    $("#message").addClass("alert alert-info");
+                    console.log(result);
+                })
+                .catch(function(error){
+                    if (error.code === 'auth/email-already-in-use') {
+                        var credential = firebase.auth.EmailAuthProvider.credential(email, password);
+
+                        var provider = new firebase.auth.GoogleAuthProvider();
+                        firebase.auth().signInWithPopup(provider)
+                        .then(function(result) {
+                            $("#message").text("Successfully logged in");
+                            $("#message").addClass("alert alert-info");
+                            console.log(result);
+                        })
+                        .catch(function(error1) {
+                            var errorCode = error1.code;
+                            var errorMessage = error1.message;
+                            $("#message").html(errorMessage);
+                            $("#message").addClass("alert alert-danger");
+                            console.log('Google sign in error', error1);
+                        });
+                    }
+                })
+            });
+
+            //Signin
+            $("#signin").click(function(e) {
+                $("#message").text("");
+                $("#message").addClass("");
+
+                var email = $("#email").val();
+                var password = $("#password").val();
+                if (!email || !password) {
+                    return console.log('email and password is required');
+                }
+
+                //sign in user
+                firebase.auth().signInWithEmailAndPassword(email, password)
+                .then(function(result) {
+                    $("#message").text("login successfully !!");
+                    $("#message").addClass("alert alert-info");
+                    console.log(result);
+                })
+                .catch(function(error) {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    $("#message").html(errorMessage);
+                    $("#message").addClass("alert alert-danger");
+                    console.log('signIn error', error);
+                })
+            });
+
+            //Google Signin
+            $("#gsignin").click(function(){
+                $("#message").text("");
+                // Sign in with Google
+                var provider = new firebase.auth.GoogleAuthProvider();
+                provider.addScope('profile');
+                provider.addScope('email');
+                return firebase.auth().signInWithPopup(provider)
+                    .then(function(result) {
+                        $("#message").text("Successfully logged in");
+                        $("#message").addClass("alert alert-info");
+                        console.log(result); 
+                    })
+                    .catch(function(error) {
+                        var errorCode = error.code;
+                        var errorMessage = error.message;
+                        $("#message").html(errorMessage);
+                        $("#message").addClass("alert alert-danger");
+                        console.log('Google sign in error', error);
+                    });
+            });
+
+            //Signout
+            $("#signout").click(function() {
+                firebase.auth().signOut();
+                $("#message").text("User signed out !!");
+                $("#message").addClass("alert alert-info");
+            });
+
+            //Listen to auth state
+            firebase.auth().onAuthStateChanged(function(user) {
+                app.user = user;
+                console.log('user', user);
+            });
+
+            //Send data to DB
+            $("#sendmsg").click(function() {
+                var content = $("#content").val();
+                if (!content) {
+                    return console.log('No content');
+                }
+                $("li").remove();
+                var ref = firebase.database().ref('messages');
+                var data = {
+                    type: 'Generic',
+                    description: content
+                }
+                ref.push(data);
+            });
+
+            //Read Data
+            var ref = firebase.database().ref('messages');
+            ref.on('value',function(result) {
+                var messages = result.val();
+                if (messages) {
+                    $("li").remove();
+                    keys = Object.keys(messages)
+                    keys.forEach(function(key) {
+                    console.log('Type :' + messages[key].type + ' :: Content :' +  messages[key].description);
+                    $("#messagelist").append('<li class="singlemsg">' + messages[key].description + '</li>');
+                    });
+                }
+            }, 
+            function(error) {
+                console.log(error);
+            });
+        });
+
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  </body>
+</html>
