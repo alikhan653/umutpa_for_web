@@ -31,9 +31,9 @@
                         <i class="las la-globe"></i> Language
                     </a>
                     <div class="dropdown-menu" aria-labelledby="languageDropdown">
-                        <a class="dropdown-item" href="patients.html" data-lang="en">English</a>
-                        <a class="dropdown-item" href="patients.html" data-lang="ru">Русский</a>
-                        <a class="dropdown-item" href="patients.html" data-lang="kz">Қазақша</a>
+                        <a class="dropdown-item"data-lang="en">English</a>
+                        <a class="dropdown-item"data-lang="ru">Русский</a>
+                        <a class="dropdown-item"data-lang="kz">Қазақша</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -58,17 +58,12 @@
 </header>
 <main>
     <div class="side-nav">
-        <ul class="list-group list-group-flush"><a class="list-group-item" href="dashboard.html"
-                                                   data-toggle="tooltip" data-placement="bottom" title="Dashboard"><i
-                class="las la-shapes la-lw"></i><span>dashboard</span></a><a class="list-group-item"
-                                                                             href="patients.html" data-toggle="tooltip" data-placement="bottom" title="Patients"><i
-                class="las la-user-injured la-lw"></i><span>patients</span></a><a class="list-group-item"
-                                                                                  href="appointments.html" data-toggle="tooltip" data-placement="bottom" title="Specialists"><i
-                class="las la-clinic-medical la-lw"></i><span>appointments</span></a><a class="list-group-item"
-                                                                                        href="medicaments.html" data-toggle="tooltip" data-placement="bottom" title="Notifications"><i
-                class="las la-medkit la-lw"></i><span>medications</span></a><a class="list-group-item"
-                                                                               href="settings.html" data-toggle="tooltip" data-placement="bottom" title="Settings"><i
-                class="las la-cogs la-lw"></i><span>settings</span></a>
+        <ul class="list-group list-group-flush"><a class="list-group-item" href="dashboard.html" data-toggle="tooltip" data-placement="bottom" title="Dashboard"><i class="las la-shapes la-lw"></i><span data-translate="dashboard">dashboard</span></a>
+            <a class="list-group-item" href="patients.html" data-toggle="tooltip" data-placement="bottom" title="Patients"><i class="las la-user-injured la-lw"></i><span data-translate="patients">patients</span></a>
+            <a class="list-group-item" href="appointments.html" data-toggle="tooltip" data-placement="bottom" title="Specialists"><i class="las la-clinic-medical la-lw"></i><span data-translate="appointments">appointments</span></a>
+            <a class="list-group-item" href="medicaments.html" data-toggle="tooltip" data-placement="bottom" title="medicaments"><i class="las la-medkit la-lw"></i><span data-translate="medications">medications</span></a>
+            <a class="list-group-item" href="settings.html" data-toggle="tooltip" data-placement="bottom" title="Settings"><i class="las la-cogs la-lw"></i><span data-translate="settings">settings</span></a>
+
             <hr class="divider" />
 
         </ul>
@@ -77,7 +72,7 @@
     <div class="main-content">
         <div class="container-fluid">
             <div class="section title-section">
-                <h5 class="page-title"></h5>
+                <h5 data-translate="Pat"></h5>
             </div>
             <div class="section filters-section">
                 <div class="dropdowns-wrapper">
@@ -128,6 +123,7 @@
     </div>
 
 </main>
+<script type="text/javascript" src="../SiteAssets/js/lang.js"></script>
 </body>
 
 </html>
