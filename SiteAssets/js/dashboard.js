@@ -21,7 +21,7 @@ auth.onAuthStateChanged(function (user) {
 		setPatientData(user);
 	}
 });
-function addPatientRow(patient) {
+function addPatientRow(patient, patientId) {
 	const tableBody = document.getElementById('patients-table-body');
 	const row = document.createElement('tr');
 	if(patient.imageUrl == null){
@@ -32,7 +32,7 @@ function addPatientRow(patient) {
     <td><p>${patient.name}</p></td>
     <td><p class="text-muted">${patient.stage}</p></td>
     <td class="text-right"><p>${patient.phone}</p></td>
-    <td class="text-right"><button class="btn btn-dark-blue-f btn-sm" onclick="location.href='makeAppoint.html'">appointment</button></td>
+    <td class="text-right"><button class="btn btn-dark-blue-f btn-sm" onclick="location.href='details.html?patientId=${patientId}'">details</button></td>
     <td><button class="btn btn-sm"><i class="las la-ellipsis-h"></i></button></td>
   `;
 
@@ -42,8 +42,7 @@ function addAppointmentRow(appointment) {
 	const tableBody = document.getElementById('appointments-table-body');
 	const row = document.createElement('tr');
 
-	const patientDataRef = firebase.database().ref('Users/' + appointment.patientId);
-	console.log("TEST1" + appointment.patientId)
+	const patientDataRef = firebase.database().ref('Users/' + appointment.patientId + '/Appointments');
 	patientDataRef.once('value').then((patientDataSnapshot) => {
 		const patient = patientDataSnapshot.val();
 		if(patient.imageUrl == null){
@@ -73,7 +72,7 @@ function fetchPatientsData(doctor) {
 	<th scope="col">Patient</th>
 	<th scope="col">Stage</th>
 	<th scope="col" class="text-right">Phone</th>
-	<th scope="col" class="text-right">Appointment</th>
+	<th scope="col" class="text-right">Details</th>
 	<th scope="col"></th>
 	`;
 
@@ -86,7 +85,7 @@ function fetchPatientsData(doctor) {
 
 			patientDataRef.once('value').then((patientDataSnapshot) => {
 				const patient = patientDataSnapshot.val();
-				addPatientRow(patient);
+				addPatientRow(patient, patientId);
 			}).catch((error) => {
 				console.error('Error fetching patient data:', error);
 				errorNotification('Error fetching patient data: ' + error.message);
@@ -98,22 +97,16 @@ function fetchPatientsData(doctor) {
 		errorNotification('Error fetching patients data: ' + error.message);
 	});
 
-	const appointmentRef = firebase.database().ref('Doctors/' + doctor.uid + '/Appointments');
+	const appointmentRef = firebase.database().ref('Users/' + doctor.uid + '/Appointments');
 
 	appointmentRef.once('value').then((snapshot) => {
 		snapshot.forEach((appointmentSnapshot) => {
-			const appointmentId = appointmentSnapshot.key;
-			console.log("AppointmentID"+appointmentId);
-			const appointmentDataRef = firebase.database().ref('Doctors/' + doctor.uid + '/Appointments/' + appointmentId);
-			appointmentDataRef.once('value').then((appointmentDataSnapshot) => {
-				const appointment = appointmentDataSnapshot.val();
-				addAppointmentRow(appointment);
-
-			});
+			const appointment = appointmentSnapshot.val();
+			addAppointmentRow(appointment);
 		});
-
 	}).catch((error) => {
-		console.error('Error fetching patients data:', error);
-		errorNotification('Error fetching patients data: ' + error.message);
+		console.error('Error fetching appointments data:', error);
+		errorNotification('Error fetching appointments data: ' + error.message);
 	});
+
 }

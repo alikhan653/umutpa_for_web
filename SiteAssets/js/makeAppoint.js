@@ -17,7 +17,6 @@ auth.onAuthStateChanged(function(user) {
             const place = document.getElementById('place').value;
             const description = document.getElementById('description').value;
 
-            // Create a new appointment object
             const newAppointment = {
                 doctorId: user.uid,
                 patientId: patientId,
@@ -40,6 +39,9 @@ auth.onAuthStateChanged(function(user) {
                     console.error('Error adding new appointment: ', error);
                     alert('Error adding new appointment. Please try again.');
                 });
+
+            const appointments2Ref = firebase.database().ref('Users/' + userId + '/Appointments');
+            appointments2Ref.push(newAppointment);
         });
 
         // Add event listener for patient select change
@@ -86,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const time = document.getElementById('time').value;
         const place = document.getElementById('place').value;
         const description = document.getElementById('description').value;
-        
+
         if (patientSelect === '' || date === '' || time === '' || place === '' || description === '') {
             alert('Please fill out all fields');
             event.preventDefault(); // Prevent form submission
