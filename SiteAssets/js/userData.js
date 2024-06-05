@@ -35,7 +35,7 @@ auth.onAuthStateChanged(function (user) {
                     // const adminButton = document.createElement('a');
                     // adminButton.id = "admin-button";
                     // adminButton.className = "list-group-item";
-                    // adminButton.href = "addpat.html";
+                    // adminButton.href = "addPat.html";
                     // adminButton.setAttribute('data-toggle', 'tooltip');
                     // adminButton.setAttribute('data-placement', 'bottom');
                     // adminButton.setAttribute('title', 'Admin Panel');
