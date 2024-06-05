@@ -8,7 +8,6 @@ auth.onAuthStateChanged(function(user) {
         appointmentForm.addEventListener('submit', function(event) {
             event.preventDefault();
 
-            // Get form values
             const patientSelect = document.getElementById('patient-select');
             const patientId = patientSelect.value;
             const name = patientSelect.options[patientSelect.selectedIndex].text;
@@ -17,8 +16,11 @@ auth.onAuthStateChanged(function(user) {
             const place = document.getElementById('place').value;
             const description = document.getElementById('description').value;
 
+            const userName = document.getElementById('usernamePlaceholder').textContent;
+
             const newAppointment = {
                 doctorId: user.uid,
+                doctorName: userName,
                 patientId: patientId,
                 name: name,
                 date: date,
