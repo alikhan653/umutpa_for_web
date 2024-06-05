@@ -18,7 +18,7 @@ function login() {
                 console.log('User Data:', userData);
 
                 if (userData.role === 'Admin') {
-                    window.location.href = "addPat.html";
+                    window.location.href = "addpat.html";
                 } else {
                     window.location.href = "dashboard.html";
                 }
