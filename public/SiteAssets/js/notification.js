@@ -111,11 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return patientData ? patientData.name : 'Unknown Patient';
     }
 
-    async function getMedication(medicationId) {
-        const snapshot = await firebase.database().ref('Medications/' + medicationId).once('value');
-        const medicationData = snapshot.val();
-        return medicationData ? medicationData : { name: 'Unknown Medication', description: '', imageUrl: '' };
-    }
+
 
     function updateMedtimeFields() {
         const frequency = parseInt(document.getElementById('frequency').value);
@@ -144,10 +140,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Fetch medication details to include description and imageUrl
         getMedication(medicationId).then(medication => {
-            const prescriptionsRef = firebase.database().ref('Doctors/' + auth.currentUser.uid + '/Patients/' + patientId + '/Prescriptions');
+            const doctorPrescriptionsRef = firebase.database().ref('Doctors/' + auth.currentUser.uid + '/Patients/' + patientId + '/Prescriptions');
+            const patientPrescriptionsRef = firebase.database().ref('Users/' + patientId + '/Prescriptions');
 
-            const newPresRef = prescriptionsRef.push();
-            newPresRef.set({
+            // Generate a unique key for the new prescription
+            const newPresRef = doctorPrescriptionsRef.push();
+            const prescriptionId = newPresRef.key;
+
+            const newPrescription = {
+                prescriptionId: prescriptionId,
                 patientId: patientId,
                 medicationId: medicationId,
                 name: medication.name,
@@ -156,7 +157,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 dosage: dosage,
                 frequency: frequency,
                 medtime: medtime,
-            }).then(function() {
+            };
+
+            // Save the new prescription under the doctor's and patient's records
+            const updates = {};
+            updates['Doctors/' + auth.currentUser.uid + '/Patients/' + patientId + '/Prescriptions/' + prescriptionId] = newPrescription;
+            updates['Users/' + patientId + '/Prescriptions/' + prescriptionId] = newPrescription;
+
+            firebase.database().ref().update(updates).then(function() {
                 alert('Medication prescribed successfully!');
                 loadPrescriptions(auth.currentUser.uid);
                 document.getElementById('doctorPrescriptionForm').reset();
@@ -166,6 +174,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    async function getMedication(medicationId) {
+        const snapshot = await firebase.database().ref('Medications/' + medicationId).once('value');
+        const medicationData = snapshot.val();
+        return medicationData ? medicationData : { name: 'Unknown Medication', description: '', imageUrl: '' };
+    }
+
 
     window.editPrescription = function(prescriptionId, patientId, medicationId, dosage, frequency, medtime) {
         document.getElementById('patientSelect').value = patientId;

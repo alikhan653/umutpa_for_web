@@ -18,8 +18,23 @@ auth.onAuthStateChanged(function(user) {
 
             const userName = document.getElementById('usernamePlaceholder').textContent;
 
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                alert('User not authenticated. Please log in.');
+                return;
+            }
+
+            const userId = user.uid;
+
+            // Reference to the patient's appointments
+            const appointmentsRef = firebase.database().ref('Users/' + patientId + '/Appointments');
+            // Generate a new unique key for the appointment
+            const newAppointmentRef = appointmentsRef.push();
+            const appointmentId = newAppointmentRef.key;
+
             const newAppointment = {
-                doctorId: user.uid,
+                appointmentId: appointmentId,
+                doctorId: userId,
                 doctorName: userName,
                 patientId: patientId,
                 name: name,
@@ -29,9 +44,8 @@ auth.onAuthStateChanged(function(user) {
                 description: description
             };
 
-            const userId = user.uid;
-            const appointmentsRef = firebase.database().ref('Users/' + patientId + '/Appointments');
-            appointmentsRef.push(newAppointment)
+            // Save the new appointment using the generated ID
+            newAppointmentRef.set(newAppointment)
                 .then(function() {
                     appointmentForm.reset();
                     alert('New appointment added successfully!');
@@ -42,8 +56,12 @@ auth.onAuthStateChanged(function(user) {
                     alert('Error adding new appointment. Please try again.');
                 });
 
-            const appointments2Ref = firebase.database().ref('Users/' + userId + '/Appointments');
-            appointments2Ref.push(newAppointment);
+            // Save the new appointment under the doctor's appointments as well
+            const doctorAppointmentsRef = firebase.database().ref('Users/' + userId + '/Appointments/' + appointmentId);
+            doctorAppointmentsRef.set(newAppointment)
+                .catch(function(error) {
+                    console.error('Error adding appointment to doctors record: ', error);
+                });
         });
 
         // Add event listener for patient select change
@@ -93,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (patientSelect === '' || date === '' || time === '' || place === '' || description === '') {
             alert('Please fill out all fields');
-            event.preventDefault(); // Prevent form submission
+            event.preventDefault();
         }
     });
     const dateInput = document.getElementById('date');

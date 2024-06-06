@@ -8,6 +8,7 @@ auth.onAuthStateChanged(function (user) {
 		fetchPatientsData(patientId);
 		displayPatientMedications(patientId, userId);
 
+
 		var dbRef = firebase.database().ref('Users/' + userId);
 
 		dbRef.once('value').then((snapshot) => {
@@ -15,7 +16,8 @@ auth.onAuthStateChanged(function (user) {
 				var userData = snapshot.val();
 				var doctorName = userData.first_name;
 				fetchUpcomingAppointments(patientId, userId, doctorName);
-				document.getElementById("namePlaceholder").innerHTML =  doctorName;
+				if(document.getElementById("namePlaceholder"))
+					document.getElementById("namePlaceholder").innerHTML =  doctorName;
 
 				document.getElementById("usernamePlaceholder").innerHTML = email_id;
 			} else {
@@ -98,8 +100,9 @@ function fetchUpcomingAppointments(patientId, userId, doctorName) {
 		if (appointments) {
 			Object.keys(appointments).forEach(key => {
 				const appointment = appointments[key];
-				const appointmentHTML = createAppointmentHTML(appointment, doctorName);
+				const appointmentHTML = createAppointmentHTML(appointment, doctorName, key);
 				upcomingAppointmentsDiv.insertAdjacentHTML('beforeend', appointmentHTML);
+				fetchAndRenderFiles(userId, key);
 			});
 		} else {
 			upcomingAppointmentsDiv.insertAdjacentHTML('beforeend', '<p>No upcoming appointments</p>');
@@ -120,8 +123,8 @@ function getDoctorName(doctorId) {
 		console.error('Error fetching doctor data:', error);
 		throw error;
 	});
-}
-function createAppointmentHTML(appointment, doctorName) {
+}// Function to create HTML for an appointment
+function createAppointmentHTML(appointment, doctorName, appointmentId) {
 	const user = firebase.auth().currentUser;
 	return `
         <div class="media">
@@ -140,11 +143,13 @@ function createAppointmentHTML(appointment, doctorName) {
                         <i class="las la-hourglass-half"></i>30 min
                     </label>
                     <a href=""><i class="las la-ellipsis-v"></i></a>
+                    <button class="btn btn-dark-red-f btn-sm" data-toggle="modal" data-target="#addRecordModal" data-appointment-id="${appointmentId}"><i class="las la-plus"></i>Add Medical Record</button>
                 </div>
             </div>
         </div>
     `;
 }
+
 
 function getDayOfWeek(dateString) {
 	const date = new Date(dateString);
@@ -265,3 +270,204 @@ function displayPatientMedications(patientId, userId) {
 	}
 
 }
+// Function to format file size
+function formatFileSize(bytes) {
+	const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+	if (bytes === 0) return '0 Byte';
+	const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+	return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+}
+
+// Function to create HTML for a file
+function createFileHTML(fileName, fileSize, fileURL, fileId, appointmentId, userId) {
+	return `
+        <a class="list-group-item" href="${fileURL}" target="_blank">
+            <i class="las la-file"></i>${fileName}
+            <div class="float-right">
+                <small class="text-muted">${formatFileSize(fileSize)}</small>
+                <div class="action-buttons no-display">
+                    <button class="btn btn-sm btn-dark-red-f delete-file" onclick="deleteFile(${userId}, ${appointmentId}, ${fileId}, ${fileURL})"
+                     data-file-id="${fileId}" data-file-url="${fileURL}">
+                        <i class="las la-trash"></i>
+                    </button>
+                    <button class="btn btn-sm btn-dark-red-f download-file" data-file-url="${fileURL}">
+                        <i class="las la-download"></i>
+                    </button>
+                </div>
+            </div>
+        </a>
+    `;
+}
+
+// Function to fetch files from Firebase and render them
+function fetchAndRenderFiles(userId, appointmentId) {
+	console.log('Fetching files for Appointment ID:', appointmentId + ' and User ID:', userId);
+	const recordRef = firebase.database().ref('Users/' + userId + '/Appointments/' + appointmentId + '/Records');
+
+	// Fetch records from Firebase
+	recordRef.once('value', function(snapshot) {
+		const filesList = document.getElementById('filesList');
+		if (!filesList) {
+			console.error('filesList element not found');
+			return;
+		}
+
+		snapshot.forEach(function(childSnapshot) {
+			const record = childSnapshot.val();
+			const fileId = childSnapshot.key;
+			if (record.fileURL) {
+				const fileName = record.fileName || 'Unknown';
+				const fileSize = record.fileSize || 0;
+				const fileURL = record.fileURL;
+
+				const fileHTML = createFileHTML(fileName, fileSize, fileURL, fileId, appointmentId, userId);
+				console.log('File HTML:', fileHTML);
+				filesList.insertAdjacentHTML('beforeend', fileHTML);
+			}
+		});
+	});
+}
+
+// Ensure the DOM is fully loaded before executing fetchAndRenderFiles
+document.addEventListener('DOMContentLoaded', function() {
+	auth.onAuthStateChanged(function (user) {
+		if (user) {
+			var userId = user.uid;
+			const patientId = getUrlParameter('patientId');
+			fetchPatientsData(patientId);
+			displayPatientMedications(patientId, userId);
+
+			var dbRef = firebase.database().ref('Users/' + userId);
+
+			dbRef.once('value').then((snapshot) => {
+				if (snapshot.exists()) {
+					var userData = snapshot.val();
+					var doctorName = userData.first_name;
+					fetchUpcomingAppointments(patientId, userId, doctorName);
+					if(document.getElementById("namePlaceholder"))
+						document.getElementById("namePlaceholder").innerHTML =  doctorName;
+
+					document.getElementById("usernamePlaceholder").innerHTML = user.email;
+				} else {
+					console.log("No data available for the specified user ID");
+				}
+			}).catch((error) => {
+				console.error("Error fetching data: ", error);
+			});
+			document.getElementById("usernamePlaceholder").innerHTML =  user.email;
+		} else {
+			window.location.href = "login.html";
+		}
+	});
+
+	$(document).on('click', '.btn[data-toggle="modal"][data-target="#addRecordModal"]', function() {
+		var appointmentId = $(this).data('appointment-id');
+		console.log('Button clicked, Appointment ID:', appointmentId);
+		$('#addRecordModal').attr('data-appointment-id', appointmentId);
+	});
+
+	$(document).on('click', '#submitRecord', function(event) {
+		event.preventDefault(); // Prevent any default action
+
+		// Get the form values
+		var recordDate = document.getElementById('recordDate').value;
+		var recordDescription = document.getElementById('recordDescription').value;
+		console.log('Record Date:', recordDate);
+		var recordFile = document.getElementById('recordFile').files[0];
+		var recordFileName = recordFile.name;
+		var recordFileSize = recordFile.size;
+		console.log('Record File:', recordFile.name);
+		console.log('Record File Size:', recordFile.size);
+
+		var user = firebase.auth().currentUser;
+
+		if (user) {
+			var userId = user.uid;
+
+			var appointmentId = document.querySelector('#addRecordModal').getAttribute('data-appointment-id');
+			console.log('Submitting record for Appointment ID:', appointmentId);
+
+			var recordRef1 = firebase.database().ref('Users/' + userId + '/Appointments/' + appointmentId + '/Records');
+			var recordRef2 = firebase.database().ref('Users/' + getUrlParameter('patientId') + '/Appointments/' + appointmentId + '/Records');
+
+			var newRecord = {
+				appointmentId: appointmentId,
+				date: recordDate,
+				description: recordDescription,
+				fileName: recordFileName,
+				fileSize: recordFileSize
+			};
+
+			function pushRecordData(recordData) {
+				recordRef1.push(recordData);
+				recordRef2.push(recordData)
+					.then(function() {
+						console.log('Medical record added successfully!');
+						document.getElementById('recordDate').value = '';
+						document.getElementById('recordDescription').value = '';
+						document.getElementById('recordFile').value = '';
+					})
+					.catch(function(error) {
+						console.error('Error adding medical record:', error);
+					});
+			}
+
+			if (recordFile) {
+				var storageRef = firebase.storage().ref('Users/' + userId + '/Appointments/' + appointmentId + '/Records/' + recordFile.name);
+
+				var uploadTask = storageRef.put(recordFile);
+
+				uploadTask.on('state_changed',
+					function(snapshot) {
+						// Observe state change events such as progress, pause, and resume
+					},
+					function(error) {
+						console.error('Error uploading file:', error);
+					},
+					function() {
+						uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+							newRecord.fileURL = downloadURL;
+
+							pushRecordData(newRecord);
+						});
+					}
+				);
+			} else {
+				pushRecordData(newRecord);
+			}
+		} else {
+			console.log('User is not signed in');
+			// Handle the case where the user is not signed in
+		}
+	});
+});
+
+function deleteFile(userId, appointmentId, fileId, fileURL) {
+	// Create reference to the file in Firebase Storage
+	const storageRef = firebase.storage().refFromURL(fileURL);
+
+	// Delete the file from Firebase Storage
+	storageRef.delete().then(() => {
+		console.log('File deleted from storage successfully');
+
+		// Delete the file metadata from Firebase Realtime Database
+		const fileRef1 = firebase.database().ref('Users/' + userId + '/Appointments/' + appointmentId + '/Records/' + fileId);
+		const fileRef2 = firebase.database().ref('Users/' + getUrlParameter('patientId') + '/Appointments/' + appointmentId + '/Records/' + fileId);
+
+		fileRef1.remove().then(() => {
+			console.log('File metadata deleted from database successfully');
+			document.getElementById('file-' + fileId).remove();
+		}).catch((error) => {
+			console.error('Error deleting file metadata from database:', error);
+		});
+
+		fileRef2.remove().then(() => {
+			console.log('File metadata deleted from database successfully');
+		}).catch((error) => {
+			console.error('Error deleting file metadata from database:', error);
+		});
+	}).catch((error) => {
+		console.error('Error deleting file from storage:', error);
+	});
+}
+
