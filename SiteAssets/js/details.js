@@ -391,6 +391,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			var recordRef2 = firebase.database().ref('Users/' + getUrlParameter('patientId') + '/Appointments/' + appointmentId + '/Records');
 
 			var newRecord = {
+				appointmentId: appointmentId,
 				date: recordDate,
 				description: recordDescription,
 				fileName: recordFileName,
